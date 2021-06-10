@@ -6,7 +6,7 @@ const { readFile, writeFile } = require("fs/promises");
 const { join: joinPath, resolve: resolvePath } = require("path");
 const { inspect } = require("util");
 const yargs = require("yargs");
-const { intersection } = require("lodash");
+const { intersection, min } = require("lodash");
 
 const srcPath = resolvePath(__dirname, "..", "..", "src");
 
@@ -84,7 +84,9 @@ function matchAnalysis(analysis, { head, pos }) {
   }
 
   if (pos.startsWith("I")) {
-    return { analysis: null, paradigm: null };
+    if (suffixTags.includes("+Ipc")) {
+      return { analysis, paradigm: null };
+    }
   }
 
   if (
@@ -105,9 +107,13 @@ function matchAnalysis(analysis, { head, pos }) {
     return { analysis, paradigm: "demonstrative-pronouns" };
   }
 
-  const swc = pos.split("-")[0];
+  if ((pos === "PrA" || pos === "PrI") && suffixTags.includes("+Pron")) {
+    return { analysis, paradigm: null };
+  }
 
-  for (let [paradigmName, paradigmSwc, paradigmTags] of [
+  const specificWordClass = pos.split("-")[0];
+
+  for (let [paradigmName, paradigmSpecificWordClass, paradigmTags] of [
     ["noun-na", "NA", ["+N", "+A"]],
     ["noun-ni", "NI", ["+N", "+I"]],
     ["noun-nad", "NDA", ["+N", "+A", "+D"]],
@@ -118,7 +124,7 @@ function matchAnalysis(analysis, { head, pos }) {
     ["verb-ii", "VII", ["+V", "+II"]],
   ]) {
     if (
-      swc === paradigmSwc &&
+      specificWordClass === paradigmSpecificWordClass &&
       intersection(paradigmTags, suffixTags).length === paradigmTags.length
     ) {
       return { analysis, paradigm: paradigmName };
@@ -163,7 +169,7 @@ class ImportJsonDictionary {
 
     const analyses = crkAnalyzer.lookup_lemma_with_affixes(head);
     // Does FST analysis match POS from toolbox file?
-    const matches = [];
+    let matches = [];
     for (const a of analyses) {
       const match = matchAnalysis(a, { head, pos });
       if (match) {
@@ -171,17 +177,43 @@ class ImportJsonDictionary {
       }
     }
     let analysis, paradigm;
-    if (matches.length === 1) {
-      const match = matches[0];
-      analysis = match.analysis;
-      paradigm = match.paradigm;
+    if (matches.length > 0) {
+      // ôma analyzes as +Pron+Def or +Pron+Dem; since we have a paradigm for
+      // the latter, let’s prefer it.
+      const matchesWithParadigms = matches.filter((m) => m.paradigm !== null);
+      if (matchesWithParadigms.length > 0) {
+        matches = matchesWithParadigms;
+      }
+
+      function analysisTagCount(analysis) {
+        const [prefixTags, lemma, suffixTags] = analysis;
+        return prefixTags.length + suffixTags.length;
+      }
+
+      const minTagCount = min(matches.map((m) => analysisTagCount(m.analysis)));
+      const matchesWithMinTagCount = matches.filter(
+        (m) => analysisTagCount(m.analysis) === minTagCount
+      );
+      if (matchesWithMinTagCount.length === 1) {
+        const bestMatch = matchesWithMinTagCount[0];
+        analysis = bestMatch.analysis;
+        paradigm = bestMatch.paradigm;
+      } else {
+        console.log(`${matches.length} matches for ${ndjsonObject.key}`);
+        ok = false;
+      }
     } else {
+      console.log(`${matches.length} matches for ${ndjsonObject.key}`);
       ok = false;
     }
 
     const linguistInfo = { pos };
     if (analysis) {
       linguistInfo.smushedAnalysis = smushAnalysis(analysis);
+    }
+    const stem = ndjsonObject.dataSources?.CW?.stm;
+    if (stem) {
+      linguistInfo.stem = stem;
     }
 
     this._entries.push({

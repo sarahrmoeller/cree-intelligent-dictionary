@@ -3,10 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Iterable, Set
 
-from CreeDictionary.API.models import (
-    Wordform,
-    wordform_cache,
-)
+from morphodict.lexicon.models import Wordform, wordform_cache
 from CreeDictionary.CreeDictionary import hfstol
 from CreeDictionary.utils import (
     get_modified_distance,

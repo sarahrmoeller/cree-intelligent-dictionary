@@ -2,7 +2,7 @@ import logging
 
 import itertools
 
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform, wordform_cache
 from CreeDictionary.API.search.core import SearchRun
 from CreeDictionary.API.search.types import Result
 from CreeDictionary.cvd import (

@@ -8,7 +8,7 @@ from typing import NewType, Iterable, Tuple, Optional
 
 from typing_extensions import Protocol
 
-from CreeDictionary.API.models import Wordform, wordform_cache
+from morphodict.lexicon.models import Wordform, wordform_cache
 from CreeDictionary.API.schema import SerializedLinguisticTag
 from CreeDictionary.API.search import ranking
 from CreeDictionary.CreeDictionary.relabelling import LABELS

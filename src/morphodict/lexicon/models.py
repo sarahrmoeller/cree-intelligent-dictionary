@@ -21,7 +21,7 @@ from CreeDictionary.utils.types import FSTTag
 
 from CreeDictionary.CreeDictionary.relabelling import LABELS
 
-from .schema import SerializedDefinition
+from CreeDictionary.API.schema import SerializedDefinition
 
 # How long a wordform or dictionary head can be (number of Unicode scalar values)
 # TODO: is this too small?
@@ -51,31 +51,9 @@ class Wordform(models.Model):
     # Queries always do .select_related("lemma"):
     objects = WordformLemmaManager()
 
-    RECOGNIZABLE_POS = [(pos.value,) * 2 for pos in PartOfSpeech] + [("", "")]
-
-    # override pk to allow use of bulk_create
-    # auto-increment is also implemented in the overridden save() method below
-    id = models.PositiveIntegerField(primary_key=True)
-
     text = models.CharField(max_length=MAX_WORDFORM_LENGTH)
 
-    inflectional_category = models.CharField(
-        max_length=10,
-        help_text="Inflectional category directly from source xml file",  # e.g. NI-3
-    )
-
-    pos = models.CharField(
-        max_length=4,
-        choices=RECOGNIZABLE_POS,
-        help_text="Part of speech parsed from source. Can be unspecified",
-    )
-
-    analysis = models.CharField(
-        max_length=50,
-        default="",
-        help_text="fst analysis or the best possible generated if the source is not analyzable",
-        # see xml_importer.py::generate_as_is_analysis
-    )
+    analysis = models.JSONField(null=True)
 
     paradigm = models.CharField(
         max_length=50,
@@ -93,28 +71,28 @@ class Wordform(models.Model):
         " analyzable or it's ambiguous",
     )
 
-    # if as_is is False. pos field is guaranteed to be not empty
-    # and will be values from `constants.POS` enum class
-
-    # if as_is is True, inflectional_category and pos fields can be under-specified, i.e. they can be empty strings
-    as_is = models.BooleanField(
-        default=False,
-        help_text="The lemma of this wordform is not determined during the importing process."
-        "is_lemma defaults to true and lemma field defaults to self",
-    )
-
     lemma = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
         related_name="inflections",
         help_text="The identified lemma of this wordform. Defaults to self",
+        # This will never actually be null, but only the import creates wordforms, so this should be ok
+        # self-referential blah blah blah
+        null=True,
     )
+
+    slug = models.CharField(max_length=50)
 
     # some lemmas have stems, they are shown in linguistic analysis
     # e.g. wâpam- is the stem for wâpamêw
-    stem = models.CharField(
+    linguist_info_stem = models.CharField(
         max_length=128,
         blank=True,
+    )
+
+    linguist_info_pos = models.CharField(
+        max_length=10,
+        help_text="Inflectional category directly from source xml file",  # e.g. NI-3
     )
 
     class Meta:
@@ -128,10 +106,10 @@ class Wordform(models.Model):
             # Used by:
             #  - affix tree intialization
             #  - sitemap generation
-            models.Index(fields=["is_lemma", "text"], name="lemma_text_idx"),
+            models.Index(fields=["is_lemma", "text"]),
             # pos and inflectional_category are used when generating the preverb cache:
-            models.Index(fields=["inflectional_category"]),
-            models.Index(fields=["pos"]),
+            # models.Index(fields=["inflectional_category"]),
+            # models.Index(fields=["pos"]),
         ]
 
     def __str__(self):
@@ -160,131 +138,6 @@ class Wordform(models.Model):
             lemma_url += f"?{self.homograph_disambiguator}={quote(str(getattr(self, self.homograph_disambiguator)))}"
 
         return lemma_url
-
-    @property
-    def wordclass_text(self) -> Optional[str]:
-        """
-        Returns the human readable text of the wordclass.
-
-        Not to be confused with the poorly-named "word_class"
-        """
-        if enum := self.word_class:
-            return enum.value
-        # Every entry in the Cree Dictionary (itwêwina) SHOULD have an applicable
-        # wordclass from crk.relabel.tsv.  So if everything is going well, this line
-        # should never be reached:
-        # TODO: should we crash with an assertion error instead?
-        return None  # pragma: no cover
-
-    def get_emoji_for_cree_wordclass(self) -> Optional[str]:
-        """
-        Attempts to get an emoji description of the full wordclass.
-        e.g., "👤👵🏽" for "nôhkom"
-        """
-        maybe_word_class = self.word_class
-        if maybe_word_class is None:
-            return None
-        fst_tag_str = maybe_word_class.to_fst_output_style().strip("+")
-        tags = [FSTTag(t) for t in fst_tag_str.split("+")]
-        return LABELS.emoji.get_longest(tags)
-
-    # We do our own caching instead of using @cachedproperty so that we can
-    # disambiguate homographs in bulk when displaying search results
-    _cached_homograph_disambiguator: Optional[str]
-
-    @property
-    def homograph_disambiguator(self) -> Optional[str]:
-        """
-        :return: the least strict field name that guarantees unique match together with the text field.
-            could be pos, inflectional_category, analysis, id or None when the text is enough to disambiguate
-        """
-        assert self.is_lemma
-
-        if hasattr(self, "_cached_homograph_disambiguator"):
-            return self._cached_homograph_disambiguator
-
-        homographs = Wordform.objects.filter(text=self.text, is_lemma=True)
-        key = self._compute_homograph_key(homographs)
-        self._cached_homograph_disambiguator = key
-        return key
-
-    # TODO: rename! it should not have an underscore!
-    @property
-    def word_class(self) -> Optional[WordClass]:
-        from_analysis = fst_analysis_parser.extract_word_class(self.analysis)
-        if from_analysis:
-            return from_analysis
-
-        # Can't get it from the analysis? Maybe its the (deprecated) part-of-speech?
-        try:
-            return WordClass(self.pos)
-        except ValueError:
-            return None
-
-    @property
-    def key(self) -> WordformKey:
-        """A value to check if objects represent the ‘same’ wordform
-
-        Works even if the objects are unsaved.
-        """
-        if self.id is not None:
-            return self.id
-        return (self.text, self.analysis)
-
-    @transaction.atomic
-    def save(self, *args, **kwargs):
-        """
-        Ensure id is auto-incrementing.
-        Infer foreign key 'lemma' to be self if self.is_lemma is set to True. (friendly to test creation)
-        """
-        max_id = Wordform.objects.aggregate(Max("id"))
-        if max_id["id__max"] is None:
-            self.id = 0
-        else:
-            self.id = max_id["id__max"] + 1
-
-        # infer lemma if it is not set.
-        # this helps with adding entries in django admin as the ui for
-        # `lemma` takes forever to load.
-        # Also helps with tests as it's now easier to create entries
-
-        if self.is_lemma:
-            self.lemma_id = self.id
-
-        super(Wordform, self).save(*args, **kwargs)
-
-    @classmethod
-    def bulk_homograph_disambiguate(cls, wordform_objects: list[Wordform]):
-        """Precache the homograph key information on the wordform_objects
-
-        The information will be retrieved with a single database query.
-        """
-        wordform_texts = list(set(wf.text for wf in wordform_objects))
-        homographs = Wordform.objects.filter(text__in=wordform_texts, is_lemma=True)
-        by_text = defaultdict(list)
-        for wf in homographs:
-            by_text[wf.text].append(wf)
-        for wf in wordform_objects:
-            wf._cached_homograph_disambiguator = wf._compute_homograph_key(
-                by_text[wf.text]
-            )
-
-    def _compute_homograph_key(self, all_wordforms_with_same_text):
-        if len(all_wordforms_with_same_text) == 1:
-            return None
-        for field in "pos", "inflectional_category", "analysis":
-            if (
-                len(
-                    [
-                        wf
-                        for wf in all_wordforms_with_same_text
-                        if getattr(self, field) == getattr(wf, field)
-                    ]
-                )
-                == 1
-            ):
-                return field
-        return "id"  # id always guarantees unique match
 
 
 class DictionarySource(models.Model):
@@ -353,9 +206,6 @@ class DictionarySource(models.Model):
 
 
 class Definition(models.Model):
-    # override pk to allow use of bulk_create
-    id = models.PositiveIntegerField(primary_key=True)
-
     text = models.CharField(max_length=200)
 
     # A definition **cites** one or more dictionary sources.
@@ -393,7 +243,7 @@ class Definition(models.Model):
         return self.text
 
 
-class EnglishKeyword(models.Model):
+class TargetLanguageKeyword(models.Model):
     # override pk to allow use of bulk_create
     id = models.PositiveIntegerField(primary_key=True)
 
@@ -414,39 +264,6 @@ class EnglishKeyword(models.Model):
 
 class _WordformCache:
     @cached_property
-    def PREVERB_ASCII_LOOKUP(self) -> dict[str, set[models.Wordform]]:
-        logger.debug("initializing preverb search")
-        # Hashing to speed up exhaustive preverb matching
-        # will look like: {"pe": {...}, "e": {...}, "nitawi": {...}}
-        # so that we won't need to search from the database every time the user searches for a preverb or when the user
-        # query contains a preverb
-        # An all inclusive filtering mechanism is inflectional_category=IPV OR pos="IPV". Don't rely on a single one
-        # due to the inconsistent labelling in the source crkeng.xml.
-        # e.g. for preverb "pe", the source gives pos=Ipc ic=IPV.
-        # For "sa", the source gives pos=IPV ic="" (unspecified)
-        # after https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/pull/262
-        # many preverbs are normalized so that both inflectional_category and pos are set to IPV.
-
-        def has_non_md_non_auto_definitions(wordform):
-            "This may look slow, but isn’t if prefetch_related has been used"
-            for d in wordform.definitions.all():
-                for c in d.citations.all():
-                    if c.abbrv not in ["auto", "MD"]:
-                        return True
-            return False
-
-        lookup = defaultdict(set)
-        queryset = Wordform.objects.filter(
-            Q(inflectional_category="IPV") | Q(pos="IPV")
-        ).prefetch_related("definitions__citations")
-        for preverb_wordform in queryset:
-            if has_non_md_non_auto_definitions(preverb_wordform):
-                lookup[remove_cree_diacritics(preverb_wordform.text.strip("-"))].add(
-                    preverb_wordform
-                )
-        return lookup
-
-    @cached_property
     def MORPHEME_RANKINGS(self) -> Dict[str, float]:
         logger.debug("reading morpheme rankings")
         ret = {}
@@ -466,7 +283,6 @@ class _WordformCache:
 
     def preload(self):
         # Accessing these cached properties will preload them
-        self.PREVERB_ASCII_LOOKUP
         self.MORPHEME_RANKINGS
 
 

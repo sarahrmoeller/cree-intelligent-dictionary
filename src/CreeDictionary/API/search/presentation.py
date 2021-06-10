@@ -10,7 +10,7 @@ from CreeDictionary.utils.fst_analysis_parser import partition_analysis
 from CreeDictionary.CreeDictionary.relabelling import LABELS
 from CreeDictionary.utils.types import FSTTag, Label, ConcatAnalysis
 from .types import Preverb, LinguisticTag, linguistic_tag_from_fst_tags
-from ..models import Wordform
+from morphodict.lexicon.models import Wordform, wordform_cache
 from ..schema import SerializedWordform, SerializedDefinition, SerializedLinguisticTag
 
 

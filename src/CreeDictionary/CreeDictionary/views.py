@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET
 
 import morphodict.analysis
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform
 from CreeDictionary.API.search import presentation, search_with_affixes
 from CreeDictionary.CreeDictionary.forms import WordSearchForm
 from CreeDictionary.CreeDictionary.paradigm.filler import Row

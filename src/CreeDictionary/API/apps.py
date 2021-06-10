@@ -1,7 +1,7 @@
 import logging
 import os
 
-from django.apps import AppConfig, apps
+from django.apps import AppConfig
 
 from CreeDictionary import cvd
 
@@ -31,12 +31,13 @@ class APIConfig(AppConfig):
             self.perform_time_consuming_initializations()
 
     def perform_time_consuming_initializations(self):
-        from CreeDictionary.API.models import wordform_cache
-        from CreeDictionary.API.search import affix
-
-        logger.debug("preloading caches")
-        affix.cache.preload()
-        wordform_cache.preload()
-        cvd.preload_models()
-
-        logger.debug("done")
+        pass
+        # from CreeDictionary.API.models import wordform_cache
+        # from CreeDictionary.API.search import affix
+        #
+        # logger.debug("preloading caches")
+        # affix.cache.preload()
+        # wordform_cache.preload()
+        # cvd.preload_models()
+        #
+        # logger.debug("done")

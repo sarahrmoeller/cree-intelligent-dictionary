@@ -2,7 +2,12 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
-from .models import Definition, DictionarySource, EnglishKeyword, Wordform
+from morphodict.lexicon.models import (
+    Definition,
+    DictionarySource,
+    TargetLanguageKeyword,
+    Wordform,
+)
 
 
 # https://stackoverflow.com/a/1720961/14558
@@ -81,7 +86,7 @@ class DefinitionAdmin(CustomModelAdmin):
     add_short_description(wordform_as_link, "Wordform")
 
 
-@admin.register(EnglishKeyword)
+@admin.register(TargetLanguageKeyword)
 class EnglishKeywordAdmin(CustomModelAdmin):
     list_display = ("lemma_as_link",)
     search_fields = ("text",)
@@ -109,7 +114,7 @@ class DefinitionInline(admin.TabularInline):
 
 
 class EnglishKeywordInline(admin.TabularInline):
-    model = EnglishKeyword
+    model = TargetLanguageKeyword
     show_change_link = True
     view_on_site = False
 
@@ -129,9 +134,9 @@ class WordformInline(admin.TabularInline):
 
 @admin.register(Wordform)
 class WordformAdmin(CustomModelAdmin):
-    list_display = ("lemma_as_link",)
+    # list_display = ("lemma_as_link",)
     search_fields = ("text", "analysis", "stem")
-    list_filter = ("is_lemma", "as_is")
+    list_filter = ("is_lemma",)
 
     inlines = [DefinitionInline, EnglishKeywordInline, WordformInline]
 
@@ -140,15 +145,15 @@ class WordformAdmin(CustomModelAdmin):
             return obj.get_absolute_url()
         return None
 
-    def lemma_as_link(self, obj: Wordform):
-        if obj.lemma == obj:
-            return "self"
+    # def lemma_as_link(self, obj: Wordform):
+    #     if obj.lemma == obj:
+    #         return "self"
+    #
+    #     return format_html(
+    #         "<a href='{url}'>{id} {name}</a>",
+    #         url=admin_url_for(obj.lemma),
+    #         id=obj.lemma_id,
+    #         name=str(obj.lemma),
+    #     )
 
-        return format_html(
-            "<a href='{url}'>{id} {name}</a>",
-            url=admin_url_for(obj.lemma),
-            id=obj.lemma_id,
-            name=str(obj.lemma),
-        )
-
-    add_short_description(lemma_as_link, "Lemma")
+    # add_short_description(lemma_as_link, "Lemma")

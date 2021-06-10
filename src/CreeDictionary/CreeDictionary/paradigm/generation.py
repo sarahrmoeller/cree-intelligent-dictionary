@@ -5,7 +5,7 @@ Handles paradigm generation.
 from functools import cache
 
 import morphodict.analysis
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform
 from CreeDictionary.CreeDictionary.paradigm.filler import Layout, ParadigmFiller
 from CreeDictionary.CreeDictionary.paradigm.manager import ParadigmManager
 from CreeDictionary.utils import shared_res_dir

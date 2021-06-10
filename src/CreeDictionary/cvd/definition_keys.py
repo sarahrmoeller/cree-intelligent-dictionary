@@ -15,7 +15,7 @@ To deal with that, this file has functions to turn definitions into string keys 
 import json
 from typing import TypedDict, cast
 
-from CreeDictionary.API.models import Definition, Wordform
+from morphodict.lexicon.models import Wordform, Definition
 
 CvdKey = str
 

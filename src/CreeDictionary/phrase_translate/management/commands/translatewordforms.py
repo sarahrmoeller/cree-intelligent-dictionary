@@ -9,7 +9,7 @@ from dataclasses import dataclass, asdict
 from typing import Iterable
 
 from django.core.management import BaseCommand
-from django.db.models import Max, Q, prefetch_related_objects
+from django.db.models import Max, Q
 from tqdm import tqdm
 
 from CreeDictionary.API.models import Wordform, Definition, DictionarySource

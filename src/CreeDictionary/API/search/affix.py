@@ -17,7 +17,7 @@ from typing import Dict, Iterable, List, NewType, Tuple
 import dawg
 from django.conf import settings
 
-from CreeDictionary.API.models import Wordform, EnglishKeyword
+from morphodict.lexicon.models import Wordform, TargetLanguageKeyword
 from CreeDictionary.utils import get_modified_distance
 from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
 from .types import (
@@ -138,7 +138,7 @@ def fetch_target_language_keywords_with_ids():
     Return pairs of indexed English keywords with their corresponding Wordform IDs.
     """
     # Slurp up all the results to prevent walking the database multiple times
-    return tuple(EnglishKeyword.objects.all().values_list("text", "lemma__id"))
+    return tuple(TargetLanguageKeyword.objects.all().values_list("text", "lemma__id"))
 
 
 def fetch_source_language_lemmas_with_ids():

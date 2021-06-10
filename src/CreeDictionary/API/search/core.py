@@ -3,7 +3,7 @@ from django.db.models import prefetch_related_objects
 from . import types, presentation
 from .query import Query
 from .util import first_non_none_value
-from ..models import WordformKey, Wordform
+from morphodict.lexicon.models import Wordform, wordform_cache, WordformKey
 
 
 class SearchRun:

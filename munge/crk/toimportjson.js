@@ -114,14 +114,14 @@ function matchAnalysis(analysis, { head, pos }) {
   const specificWordClass = pos.split("-")[0];
 
   for (let [paradigmName, paradigmSpecificWordClass, paradigmTags] of [
-    ["noun-na", "NA", ["+N", "+A"]],
-    ["noun-ni", "NI", ["+N", "+I"]],
-    ["noun-nad", "NDA", ["+N", "+A", "+D"]],
-    ["noun-nid", "NDI", ["+N", "+I", "+D"]],
-    ["verb-ta", "VTA", ["+V", "+TA"]],
-    ["verb-ti", "VTI", ["+V", "+TI"]],
-    ["verb-ai", "VAI", ["+V", "+AI"]],
-    ["verb-ii", "VII", ["+V", "+II"]],
+    ["NA", "NA", ["+N", "+A"]],
+    ["NI", "NI", ["+N", "+I"]],
+    ["NAD", "NDA", ["+N", "+A", "+D"]],
+    ["NID", "NDI", ["+N", "+I", "+D"]],
+    ["VTA", "VTA", ["+V", "+TA"]],
+    ["VTI", "VTI", ["+V", "+TI"]],
+    ["VAI", "VAI", ["+V", "+AI"]],
+    ["VII", "VII", ["+V", "+II"]],
   ]) {
     if (
       specificWordClass === paradigmSpecificWordClass &&

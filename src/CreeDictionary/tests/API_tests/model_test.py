@@ -4,7 +4,7 @@ import logging
 import pytest
 from hypothesis import assume, given
 
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform
 from CreeDictionary.API.search import search
 from CreeDictionary.API.search.util import to_sro_circumflex
 from CreeDictionary.tests.conftest import lemmas
@@ -60,9 +60,9 @@ def test_search_for_exact_lemma(lemma: Wordform):
     """
 
     assert lemma.is_lemma
-    lemma_from_analysis, _, _ = lemma.analysis.partition("+")
-    assert all(c == c.lower() for c in lemma_from_analysis)
-    assume(lemma.text == lemma_from_analysis)
+    _, fst_lemma, _ = lemma.analysis
+    assert all(c == c.lower() for c in fst_lemma)
+    assume(lemma.text == fst_lemma)
 
     query = lemma.text
     search_results = search(query=query).presentation_results()

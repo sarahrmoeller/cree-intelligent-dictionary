@@ -13,7 +13,7 @@ from django.test import Client
 from django.urls import reverse
 from pytest_django.asserts import assertInHTML
 
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform
 from crkeng.app.preferences import DisplayMode, ParadigmLabel
 
 # The test wants an ID that never exists. Never say never; I have no idea if we'll
@@ -88,20 +88,24 @@ def test_pages_render_without_template_errors(url: str, client: Client, caplog):
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "lexeme,query,example_forms",
+    "lexeme,slug_disambiguator,example_forms",
     [
-        ("niya", {}, ["niyanân", "kiyânaw", "kiyawâw", "wiyawâw"]),
-        ("awa", {"pos": "PRON"}, ["ôma", "awa", "ana"]),
-        ("minôs", {}, ["minôs", "minôsa", "niminôs"]),
+        ("niya", None, ["niyanân", "kiyânaw", "kiyawâw", "wiyawâw"]),
+        ("awa", "awa1", ["ôma", "awa", "ana"]),
+        ("minôs", None, ["minôs", "minôsa", "niminôs"]),
     ],
 )
-def test_retrieve_paradigm(client: Client, lexeme: str, query, example_forms: str):
+def test_retrieve_paradigm(
+    client: Client, lexeme: str, slug_disambiguator, example_forms: str
+):
     """
     Test going to the lexeme details page with a paradigm.
     """
-    url = reverse("cree-dictionary-index-with-lemma", args=[lexeme])
-    if query:
-        url += "?" + urlencode(query)
+    query_args = {}
+    if slug_disambiguator:
+        query_args["slug"] = slug_disambiguator
+    wf = Wordform.objects.get(text=lexeme, **query_args)
+    url = reverse("cree-dictionary-index-with-lemma", args=[wf.slug])
     response = client.get(url)
 
     assert response.status_code == 200

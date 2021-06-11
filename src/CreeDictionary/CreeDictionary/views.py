@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 # it should be used on the view functions that are well covered by integration tests
 
 
-def entry_details(request, lemma_text: str):
+def entry_details(request, slug: str):
     """
     Head word detail page. Will render a paradigm, if applicable. Fallback to search
     page if no head is found or multiple heads are found.
@@ -57,16 +57,16 @@ def entry_details(request, lemma_text: str):
         - paradigm-size (default is BASIC) to specify the size of the paradigm
 
     :param request: accepts query params `pos` `inflectional_category` `analysis` `id` to further specify query_string
-    :param lemma_text: the exact form of the lemma (no spell relaxation)
+    :param slug: the exact form of the lemma (no spell relaxation)
     """
 
-    lemma = Wordform.objects.filter(text=lemma_text, is_lemma=True)
+    lemma = Wordform.objects.filter(slug=slug, is_lemma=True)
     if additional_filters := disambiguating_filter_from_query_params(request.GET):
         lemma = lemma.filter(**additional_filters)
 
     if lemma.count() != 1:
         # The result is either empty or ambiguous; either way, do a search!
-        return redirect(url_for_query(lemma_text or ""))
+        return redirect(url_for_query(slug or ""))
 
     lemma = lemma.get()
     paradigm_size = ParadigmSize.from_string(request.GET.get("paradigm-size"))
@@ -374,20 +374,23 @@ def paradigm_for(
             wordform,
         )
         # TODO: better return value for when a paradigm cannot be found
-        return []
+        # return []
 
-    # TODO: use new-style paradigms for other sizes in addition to FULL
-    # Requires:
-    #  - "basic" size paradigm layouts to be created
-    #  - paradigm manager must support multiple sizes
-    #  - relabelling must work to use linguistic layouts
-    if paradigm_size == ParadigmSize.FULL and (word_class := wordform.word_class):
+        # TODO: use new-style paradigms for other sizes in addition to FULL
+        # Requires:
+        #  - "basic" size paradigm layouts to be created
+        #  - paradigm manager must support multiple sizes
+        #  - relabelling must work to use linguistic layouts
+        # if (
+        #     paradigm_size == ParadigmSize.FULL
+        # ):  # and (word_class := wordform.word_class):
         dynamic_paradigm = manager.dynamic_paradigm_for(
-            lemma=wordform.text, word_class=word_class.value
+            lemma=wordform.text, word_class=wordform.paradigm
         )
         if dynamic_paradigm:
             return dynamic_paradigm
         return []
 
-    # try returning an old-style paradigm: may return []
-    return generate_paradigm(wordform, paradigm_size)
+        # try returning an old-style paradigm: may return []
+        # return generate_paradigm(wordform, paradigm_size)
+        return []

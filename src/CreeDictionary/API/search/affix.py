@@ -138,7 +138,9 @@ def fetch_target_language_keywords_with_ids():
     Return pairs of indexed English keywords with their corresponding Wordform IDs.
     """
     # Slurp up all the results to prevent walking the database multiple times
-    return tuple(TargetLanguageKeyword.objects.all().values_list("text", "lemma__id"))
+    return tuple(
+        TargetLanguageKeyword.objects.all().values_list("text", "wordform__id")
+    )
 
 
 def fetch_source_language_lemmas_with_ids():

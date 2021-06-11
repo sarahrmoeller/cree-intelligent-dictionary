@@ -10,6 +10,8 @@ from django.db import models, transaction
 from django.db.models import Max, Q
 from django.urls import reverse
 from django.utils.functional import cached_property
+from hfst_optimized_lookup import Analysis
+
 from CreeDictionary.utils import (
     PartOfSpeech,
     WordClass,
@@ -25,6 +27,8 @@ from CreeDictionary.API.schema import SerializedDefinition
 
 # How long a wordform or dictionary head can be (number of Unicode scalar values)
 # TODO: is this too small?
+from morphodict.analysis import RichAnalysis
+
 MAX_WORDFORM_LENGTH = 40
 
 # Don't start evicting cache entries until we've seen over this many unique definitions:
@@ -53,7 +57,7 @@ class Wordform(models.Model):
 
     text = models.CharField(max_length=MAX_WORDFORM_LENGTH)
 
-    analysis = models.JSONField(null=True)
+    raw_analysis = models.JSONField(null=True)
 
     paradigm = models.CharField(
         max_length=50,
@@ -81,7 +85,15 @@ class Wordform(models.Model):
         null=True,
     )
 
-    slug = models.CharField(max_length=50)
+    slug = models.CharField(
+        max_length=50,
+        unique=True,
+        null=True,
+        help_text="""
+            A stable unique identifier for a lemma. Used in public-facing URLs,
+            and for import reconciliation.
+        """,
+    )
 
     # some lemmas have stems, they are shown in linguistic analysis
     # e.g. wâpam- is the stem for wâpamêw
@@ -98,7 +110,7 @@ class Wordform(models.Model):
     class Meta:
         indexes = [
             # analysis is for faster user query (see search/lookup.py)
-            models.Index(fields=["analysis"]),
+            models.Index(fields=["raw_analysis"]),
             # text index benefits fast wordform matching (see search/lookup.py)
             models.Index(fields=["text"]),
             # When we *just* want to lookup text wordforms that are "lemmas"
@@ -112,12 +124,38 @@ class Wordform(models.Model):
             # models.Index(fields=["pos"]),
         ]
 
+        constraints = [
+            # models.UniqueConstraint(
+            #     fields=("text", "analysis"),
+            #     name="text_analysis_unique",
+            #     condition=Q(analysis__isnull=False),
+            # )
+        ]
+
     def __str__(self):
         return self.text
 
     def __repr__(self):
         cls_name = type(self).__name__
         return f"<{cls_name}: {self.text} {self.analysis}>"
+
+    @property
+    def analysis(self):
+        if self.raw_analysis is None:
+            return None
+        return RichAnalysis(self.raw_analysis)
+
+    @property
+    def key(self) -> WordformKey:
+        """A value to check if objects represent the ‘same’ wordform
+
+        Works even if the objects are unsaved.
+        """
+        if self.slug is not None:
+            return self.slug
+        if self.id is not None:
+            return self.id
+        return (self.text, self.analysis)
 
     def get_absolute_url(self, ambiguity: Literal["allow", "avoid"] = "avoid") -> str:
         """
@@ -126,18 +164,7 @@ class Wordform(models.Model):
          it's the least strict url that guarantees unique match in the database
         """
         assert self.is_lemma, "There is no page for non-lemmas"
-        lemma_url = reverse(
-            "cree-dictionary-index-with-lemma", kwargs={"lemma_text": self.text}
-        )
-
-        if ambiguity == "allow":
-            # avoids doing an expensive lookup to disambiguate
-            return lemma_url
-
-        if self.homograph_disambiguator is not None:
-            lemma_url += f"?{self.homograph_disambiguator}={quote(str(getattr(self, self.homograph_disambiguator)))}"
-
-        return lemma_url
+        return reverse("cree-dictionary-index-with-lemma", kwargs={"slug": self.slug})
 
 
 class DictionarySource(models.Model):
@@ -244,19 +271,14 @@ class Definition(models.Model):
 
 
 class TargetLanguageKeyword(models.Model):
-    # override pk to allow use of bulk_create
-    id = models.PositiveIntegerField(primary_key=True)
-
     text = models.CharField(max_length=20)
 
-    # N.B., this says "lemma", but it can actually be ANY Wordform
-    # (lemma or non-lemma)
-    lemma = models.ForeignKey(
-        Wordform, on_delete=models.CASCADE, related_name="english_keyword"
+    wordform = models.ForeignKey(
+        Wordform, on_delete=models.CASCADE, related_name="target_language_keyword"
     )
 
     def __repr__(self) -> str:
-        return f"<EnglishKeyword(text={self.text!r} of {self.lemma!r} ({self.id})>"
+        return f"<EnglishKeyword(text={self.text!r} of {self.wordform!r} ({self.id})>"
 
     class Meta:
         indexes = [models.Index(fields=["text"])]

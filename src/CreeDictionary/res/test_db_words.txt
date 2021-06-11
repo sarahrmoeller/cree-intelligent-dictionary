@@ -139,3 +139,7 @@ misâskwatôminihk
 katawatêyimêw
 asawâpamêw
 atamiskawêw
+
+âcimowin
+# this lemma can be NA, VAI, and VII
+nêwokâtêw

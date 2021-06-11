@@ -43,10 +43,12 @@ class PresentationResult:
         self.is_lemma = result.is_lemma
         self.source_language_match = result.source_language_match
 
+        analysis = result.wordform.analysis or [[], None, []]
         (
             self.linguistic_breakdown_head,
+            _,
             self.linguistic_breakdown_tail,
-        ) = safe_partition_analysis(result.wordform.analysis)
+        ) = analysis
 
         self.preverbs = get_preverbs_from_head_breakdown(self.linguistic_breakdown_head)
 
@@ -107,14 +109,14 @@ def serialize_wordform(wordform) -> SerializedWordform:
     result["lemma_url"] = wordform.get_absolute_url()
 
     # Displayed in the word class/inflection help:
-    result["inflectional_category_plain_english"] = LABELS.english.get(
-        wordform.inflectional_category
-    )
-    result["inflectional_category_linguistic"] = LABELS.linguistic_long.get(
-        wordform.inflectional_category
-    )
-    result["wordclass_emoji"] = wordform.get_emoji_for_cree_wordclass()
-    result["wordclass"] = wordform.wordclass_text
+    # result["inflectional_category_plain_english"] = LABELS.english.get(
+    #     wordform.inflectional_category
+    # )
+    # result["inflectional_category_linguistic"] = LABELS.linguistic_long.get(
+    #     wordform.inflectional_category
+    # )
+    # result["wordclass_emoji"] = wordform.get_emoji_for_cree_wordclass()
+    # result["wordclass"] = wordform.wordclass_text
 
     return result
 

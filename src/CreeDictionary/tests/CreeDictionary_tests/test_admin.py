@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from CreeDictionary.API.models import Wordform
+from morphodict.lexicon.models import Wordform
 
 
 @pytest.mark.django_db

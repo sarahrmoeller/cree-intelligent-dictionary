@@ -10,7 +10,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-na",
+    "paradigm": "NA",
     "senses": [
       {
         "definition": "star, little star",
@@ -30,7 +30,7 @@
       "smushedAnalysis": "acâhkos+N+A+Sg",
       "stem": "acâhkos-"
     },
-    "slug": "acahkos",
+    "slug": "acâhkos",
     "ok": true
   },
   {
@@ -44,7 +44,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-na",
+    "paradigm": "NA",
     "senses": [
       {
         "definition": "beaver",
@@ -78,7 +78,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "Edmonton, AB",
@@ -98,7 +98,7 @@
       "smushedAnalysis": "amiskwaciy-wâskahikan+N+I+Sg",
       "stem": "amiskwaciy-wâskahikan-"
     },
-    "slug": "amiskwaciywaskahikan",
+    "slug": "amiskwaciy-wâskahikan",
     "ok": true
   },
   {
@@ -139,7 +139,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he looks out for s.o., s/he watches for s.o., s/he waits and watches for s.o., s/he lies in watch for s.o.",
@@ -159,7 +159,7 @@
       "smushedAnalysis": "asawâpamêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "asawâpam-"
     },
-    "slug": "asawapamew",
+    "slug": "asawâpamêw",
     "ok": true
   },
   {
@@ -175,7 +175,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he greets s.o., s/he sends greetings to s.o.",
@@ -219,7 +219,7 @@
       "smushedAnalysis": "atamiskawêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "atamiskaw-"
     },
-    "slug": "atamiskawew",
+    "slug": "atamiskawêw",
     "ok": true
   },
   {
@@ -233,7 +233,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-na",
+    "paradigm": "NA",
     "senses": [
       {
         "definition": "star",
@@ -253,7 +253,7 @@
       "smushedAnalysis": "atâhk+N+A+Sg",
       "stem": "atâhkw-"
     },
-    "slug": "atahk",
+    "slug": "atâhk",
     "ok": true
   },
   {
@@ -328,7 +328,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he is a child",
@@ -342,7 +342,7 @@
       "smushedAnalysis": "awâsisîwiw+V+AI+Ind+3Sg",
       "stem": "awâsisîwi-"
     },
-    "slug": "awasisiwiw",
+    "slug": "awâsisîwiw",
     "ok": true
   },
   {
@@ -376,7 +376,7 @@
       "pos": "PrA",
       "smushedAnalysis": "awîna+Pron+Interr+A+Sg"
     },
-    "slug": "awina",
+    "slug": "awîna",
     "ok": true
   },
   {
@@ -391,7 +391,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is, it is there, it exists",
@@ -405,7 +405,7 @@
       "smushedAnalysis": "ayâw+V+II+Ind+3Sg",
       "stem": "ayâ-"
     },
-    "slug": "ayaw1",
+    "slug": "ayâw1",
     "ok": true
   },
   {
@@ -420,7 +420,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ti",
+    "paradigm": "VTI",
     "senses": [
       {
         "definition": "s/he has s.t., s/he owns s.t.",
@@ -440,7 +440,7 @@
       "smushedAnalysis": "ayâw+V+TI+Ind+3Sg",
       "stem": "ayâ-"
     },
-    "slug": "ayaw2",
+    "slug": "ayâw2",
     "ok": true
   },
   {
@@ -455,7 +455,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he is, s/he is there, s/he is located there",
@@ -481,7 +481,7 @@
       "smushedAnalysis": "ayâw+V+AI+Ind+3Sg",
       "stem": "ayâ-"
     },
-    "slug": "ayaw3",
+    "slug": "ayâw3",
     "ok": true
   },
   {
@@ -495,7 +495,7 @@
         "+Pl"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "clothes",
@@ -555,7 +555,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he tells about s.o., s/he talks about s.o., s/he narrates about s.o.",
@@ -581,7 +581,47 @@
       "smushedAnalysis": "âcimêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "âcim-"
     },
-    "slug": "acimew",
+    "slug": "âcimêw",
+    "ok": true
+  },
+  {
+    "head": "âcimowin",
+    "analysis": [
+      [],
+      "âcimowin",
+      [
+        "+N",
+        "+I",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NI",
+    "senses": [
+      {
+        "definition": "story, true story, account, report",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "news",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "what is being told",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NI-1",
+      "smushedAnalysis": "âcimowin+N+I+Sg",
+      "stem": "âcimowin-"
+    },
+    "slug": "âcimowin",
     "ok": true
   },
   {
@@ -595,7 +635,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "difficult thing",
@@ -609,7 +649,7 @@
       "smushedAnalysis": "âyiman+N+I+Sg",
       "stem": "âýiman-"
     },
-    "slug": "ayiman1",
+    "slug": "âýiman1",
     "ok": true
   },
   {
@@ -624,7 +664,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is difficult",
@@ -644,7 +684,7 @@
       "smushedAnalysis": "âyiman+V+II+Ind+3Sg",
       "stem": "âýiman-"
     },
-    "slug": "ayiman2",
+    "slug": "âýiman2",
     "ok": true
   },
   {
@@ -693,7 +733,7 @@
       "pos": "IPC",
       "smushedAnalysis": "êkwa+Ipc"
     },
-    "slug": "ekwa",
+    "slug": "êkwa",
     "ok": true
   },
   {
@@ -719,7 +759,7 @@
       "pos": "IPJ",
       "smushedAnalysis": "êkwatik+Ipc+Interj"
     },
-    "slug": "ekwatik",
+    "slug": "êkwatik",
     "ok": true
   },
   {
@@ -756,7 +796,7 @@
       "pos": "IPC",
       "smushedAnalysis": "ispîhk+Ipc"
     },
-    "slug": "ispihk",
+    "slug": "ispîhk",
     "ok": true
   },
   {
@@ -772,7 +812,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he thinks s.o. beautiful",
@@ -786,7 +826,48 @@
       "smushedAnalysis": "katawatêyimêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "katawatêýim-"
     },
-    "slug": "katawateyimew",
+    "slug": "katawatêýimêw",
+    "ok": true
+  },
+  {
+    "head": "kiskinwahamâkosiw",
+    "analysis": [
+      [],
+      "kiskinwahamâkosiw",
+      [
+        "+V",
+        "+AI",
+        "+Ind",
+        "+3Sg"
+      ]
+    ],
+    "paradigm": "VAI",
+    "senses": [
+      {
+        "definition": "s/he learns",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "s/he is a student, s/he attends school",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "s/he is taught",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "VAI-1",
+      "smushedAnalysis": "kiskinwahamâkosiw+V+AI+Ind+3Sg",
+      "stem": "kiskinwahamâkosi-"
+    },
+    "slug": "kiskinwahamâkosiw",
     "ok": true
   },
   {
@@ -801,7 +882,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is day, it is daylight",
@@ -815,7 +896,7 @@
       "smushedAnalysis": "kîsikâw+V+II+Ind+3Sg",
       "stem": "kîsikâ-"
     },
-    "slug": "kisikaw1",
+    "slug": "kîsikâw1",
     "ok": true
   },
   {
@@ -829,7 +910,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "day, daylight",
@@ -849,7 +930,7 @@
       "smushedAnalysis": "kîsikâw+N+I+Sg",
       "stem": "kîsikâw-"
     },
-    "slug": "kisikaw2",
+    "slug": "kîsikâw2",
     "ok": true
   },
   {
@@ -864,7 +945,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he races, s/he is in a race",
@@ -884,7 +965,7 @@
       "smushedAnalysis": "kotiskâwêw+V+AI+Ind+3Sg",
       "stem": "kotiskâwê-"
     },
-    "slug": "kotiskawew2",
+    "slug": "kotiskâwêw",
     "ok": true
   },
   {
@@ -898,7 +979,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-na",
+    "paradigm": "NA",
     "senses": [
       {
         "definition": "cat",
@@ -912,7 +993,7 @@
       "smushedAnalysis": "minôs+N+A+Sg",
       "stem": "minôs-"
     },
-    "slug": "minos",
+    "slug": "minôs",
     "ok": true
   },
   {
@@ -926,7 +1007,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-na",
+    "paradigm": "NA",
     "senses": [
       {
         "definition": "kitten, little cat",
@@ -946,7 +1027,7 @@
       "smushedAnalysis": "minôsis+N+A+Sg",
       "stem": "minôsis-"
     },
-    "slug": "minosis",
+    "slug": "minôsis",
     "ok": true
   },
   {
@@ -973,7 +1054,7 @@
       "smushedAnalysis": "misâskwatôminihk+Ipc+Prop",
       "stem": "misâskwatômin-"
     },
-    "slug": "misaskwatominihk",
+    "slug": "misâskwatôminihk",
     "ok": true
   },
   {
@@ -988,7 +1069,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he eats, s/he has a meal",
@@ -1014,7 +1095,7 @@
       "smushedAnalysis": "mîcisow+V+AI+Ind+3Sg",
       "stem": "mîciso-"
     },
-    "slug": "micisow",
+    "slug": "mîcisow",
     "ok": true
   },
   {
@@ -1029,7 +1110,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ti",
+    "paradigm": "VTI",
     "senses": [
       {
         "definition": "s/he eats s.t.",
@@ -1049,7 +1130,7 @@
       "smushedAnalysis": "mîciw+V+TI+Ind+3Sg",
       "stem": "mîci-"
     },
-    "slug": "miciw",
+    "slug": "mîciw",
     "ok": true
   },
   {
@@ -1065,7 +1146,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-nid",
+    "paradigm": "NID",
     "senses": [
       {
         "definition": "tooth",
@@ -1085,7 +1166,7 @@
       "smushedAnalysis": "mîpit+N+I+D+PxX+Sg",
       "stem": "-îpit-"
     },
-    "slug": "mipit",
+    "slug": "mîpit",
     "ok": true
   },
   {
@@ -1101,7 +1182,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he eats s.o. (e.g. bread)",
@@ -1121,7 +1202,99 @@
       "smushedAnalysis": "mowêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "mow-"
     },
-    "slug": "mowew",
+    "slug": "mowêw",
+    "ok": true
+  },
+  {
+    "head": "nêwokâtêw",
+    "analysis": [
+      [],
+      "nêwokâtêw",
+      [
+        "+V",
+        "+II",
+        "+Ind",
+        "+3Sg"
+      ]
+    ],
+    "paradigm": "VII",
+    "senses": [
+      {
+        "definition": "it is four panels wide (as a tent)",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "it has four legs",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "VII-2v",
+      "smushedAnalysis": "nêwokâtêw+V+II+Ind+3Sg",
+      "stem": "nêwokâtê-"
+    },
+    "slug": "nêwokâtêw1",
+    "ok": true
+  },
+  {
+    "head": "nêwokâtêw",
+    "analysis": [
+      [],
+      "nêwokâtêw",
+      [
+        "+N",
+        "+A",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NA",
+    "senses": [
+      {
+        "definition": "wagon",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NA-2",
+      "smushedAnalysis": "nêwokâtêw+N+A+Sg",
+      "stem": "nêwokâtêw-"
+    },
+    "slug": "nêwokâtêw2",
+    "ok": true
+  },
+  {
+    "head": "nêwokâtêw",
+    "analysis": [
+      [],
+      "nêwokâtêw",
+      [
+        "+V",
+        "+AI",
+        "+Ind",
+        "+3Sg"
+      ]
+    ],
+    "paradigm": "VAI",
+    "senses": [
+      {
+        "definition": "it is four-legged",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "VAI-1",
+      "smushedAnalysis": "nêwokâtêw+V+AI+Ind+3Sg",
+      "stem": "nêwokâtê-"
+    },
+    "slug": "nêwokâtêw3",
     "ok": true
   },
   {
@@ -1137,7 +1310,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-nad",
+    "paradigm": "NAD",
     "senses": [
       {
         "definition": "my dream spirit",
@@ -1151,7 +1324,7 @@
       "smushedAnalysis": "nipawâkan+N+A+D+Px1Sg+Sg",
       "stem": "-pawâkan-"
     },
-    "slug": "nipawakan",
+    "slug": "nipawâkan",
     "ok": true
   },
   {
@@ -1166,7 +1339,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he sleeps, s/he is asleep",
@@ -1186,7 +1359,41 @@
       "smushedAnalysis": "nipâw+V+AI+Ind+3Sg",
       "stem": "nipâ-"
     },
-    "slug": "nipaw",
+    "slug": "nipâw",
+    "ok": true
+  },
+  {
+    "head": "nipiy",
+    "analysis": [
+      [],
+      "nipiy",
+      [
+        "+N",
+        "+I",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NI",
+    "senses": [
+      {
+        "definition": "water",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "Water.",
+        "sources": [
+          "MD"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NI-2",
+      "smushedAnalysis": "nipiy+N+I+Sg",
+      "stem": "nipiy-"
+    },
+    "slug": "nipiy",
     "ok": true
   },
   {
@@ -1244,7 +1451,7 @@
       "pos": "PrA",
       "smushedAnalysis": "niya+Pron+Pers+1Sg"
     },
-    "slug": "niya1",
+    "slug": "niýa",
     "ok": true
   },
   {
@@ -1271,7 +1478,7 @@
       "pos": "PrA",
       "smushedAnalysis": "niyanân+Pron+Pers+1Pl"
     },
-    "slug": "niyanan1",
+    "slug": "niýanân",
     "ok": true
   },
   {
@@ -1288,7 +1495,7 @@
       "pos": "VAI-1",
       "stem": "nîmi-"
     },
-    "slug": "niminaniwan",
+    "slug": "nîminâniwan",
     "ok": false
   },
   {
@@ -1303,7 +1510,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he dances",
@@ -1317,7 +1524,7 @@
       "smushedAnalysis": "nîmiw+V+AI+Ind+3Sg",
       "stem": "nîmi-"
     },
-    "slug": "nimiw",
+    "slug": "nîmiw",
     "ok": true
   },
   {
@@ -1332,7 +1539,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is summer",
@@ -1352,41 +1559,7 @@
       "smushedAnalysis": "nîpin+V+II+Ind+3Sg",
       "stem": "nîpin-"
     },
-    "slug": "nipin",
-    "ok": true
-  },
-  {
-    "head": "nipiy",
-    "analysis": [
-      [],
-      "nipiy",
-      [
-        "+N",
-        "+I",
-        "+Sg"
-      ]
-    ],
-    "paradigm": "noun-ni",
-    "senses": [
-      {
-        "definition": "water",
-        "sources": [
-          "CW"
-        ]
-      },
-      {
-        "definition": "Water.",
-        "sources": [
-          "MD"
-        ]
-      }
-    ],
-    "linguistInfo": {
-      "pos": "NI-2",
-      "smushedAnalysis": "nipiy+N+I+Sg",
-      "stem": "nipiy-"
-    },
-    "slug": "nipiy1",
+    "slug": "nîpin",
     "ok": true
   },
   {
@@ -1402,7 +1575,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-nad",
+    "paradigm": "NAD",
     "senses": [
       {
         "definition": "my grandmother",
@@ -1428,7 +1601,7 @@
       "smushedAnalysis": "nôhkom+N+A+D+Px1Sg+Sg",
       "stem": "-ohkom-"
     },
-    "slug": "nohkom",
+    "slug": "nôhkom",
     "ok": true
   },
   {
@@ -1443,7 +1616,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he lacks (s.t.)",
@@ -1469,7 +1642,7 @@
       "smushedAnalysis": "nôhtêpayiw+V+AI+Ind+3Sg",
       "stem": "nôhtêpaýi-"
     },
-    "slug": "nohtepayiw1",
+    "slug": "nôhtêpaýiw1",
     "ok": true
   },
   {
@@ -1484,7 +1657,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is insufficient, it falls short",
@@ -1498,7 +1671,7 @@
       "smushedAnalysis": "nôhtêpayiw+V+II+Ind+3Sg",
       "stem": "nôhtêpaýi-"
     },
-    "slug": "nohtepayiw2",
+    "slug": "nôhtêpaýiw2",
     "ok": true
   },
   {
@@ -1553,7 +1726,7 @@
       "pos": "IPC",
       "smushedAnalysis": "ohci+Ipc"
     },
-    "slug": "ohci1",
+    "slug": "ohci",
     "ok": true
   },
   {
@@ -1580,7 +1753,7 @@
       "smushedAnalysis": "otôskwanihk+Ipc+Prop",
       "stem": "-tôskwan-"
     },
-    "slug": "otoskwanihk",
+    "slug": "otôskwanihk",
     "ok": true
   },
   {
@@ -1609,7 +1782,7 @@
       "pos": "PrI",
       "smushedAnalysis": "ôma+Pron+Dem+Prox+I+Sg"
     },
-    "slug": "oma1",
+    "slug": "ôma1",
     "ok": true
   },
   {
@@ -1658,7 +1831,7 @@
       "pos": "IPC",
       "smushedAnalysis": "ôma+Ipc"
     },
-    "slug": "oma2",
+    "slug": "ôma2",
     "ok": true
   },
   {
@@ -1707,7 +1880,7 @@
       "pos": "IPC",
       "smushedAnalysis": "pêyak+Ipc"
     },
-    "slug": "peyak",
+    "slug": "pêyak",
     "ok": true
   },
   {
@@ -1721,7 +1894,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "year, winter",
@@ -1750,7 +1923,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is winter",
@@ -1807,7 +1980,7 @@
       "pos": "IPC",
       "smushedAnalysis": "tânisi+Ipc"
     },
-    "slug": "tanisi1",
+    "slug": "tânisi1",
     "ok": true
   },
   {
@@ -1832,7 +2005,7 @@
       "pos": "IPJ",
       "smushedAnalysis": "tânisi+Ipc"
     },
-    "slug": "tanisi2",
+    "slug": "tânisi2",
     "ok": true
   },
   {
@@ -1846,7 +2019,7 @@
         "+Sg"
       ]
     ],
-    "paradigm": "noun-ni",
+    "paradigm": "NI",
     "senses": [
       {
         "definition": "night",
@@ -1866,7 +2039,7 @@
       "smushedAnalysis": "tipiskâw+N+I+Sg",
       "stem": "tipiskâw-"
     },
-    "slug": "tipiskaw1",
+    "slug": "tipiskâw1",
     "ok": true
   },
   {
@@ -1881,7 +2054,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ii",
+    "paradigm": "VII",
     "senses": [
       {
         "definition": "it is night, it is night time",
@@ -1901,7 +2074,7 @@
       "smushedAnalysis": "tipiskâw+V+II+Ind+3Sg",
       "stem": "tipiskâ-"
     },
-    "slug": "tipiskaw2",
+    "slug": "tipiskâw2",
     "ok": true
   },
   {
@@ -1916,7 +2089,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ti",
+    "paradigm": "VTI",
     "senses": [
       {
         "definition": "s/he sees s.t., s/he witnesses s.t.",
@@ -1942,7 +2115,7 @@
       "smushedAnalysis": "wâpahtam+V+TI+Ind+3Sg",
       "stem": "wâpaht-"
     },
-    "slug": "wapahtam",
+    "slug": "wâpahtam",
     "ok": true
   },
   {
@@ -1958,7 +2131,7 @@
         "+4Sg/PlO"
       ]
     ],
-    "paradigm": "verb-ta",
+    "paradigm": "VTA",
     "senses": [
       {
         "definition": "s/he sees s.o., s/he witnesses s.o.",
@@ -1972,7 +2145,7 @@
       "smushedAnalysis": "wâpamêw+V+TA+Ind+3Sg+4Sg/PlO",
       "stem": "wâpam-"
     },
-    "slug": "wapamew",
+    "slug": "wâpamêw",
     "ok": true
   },
   {
@@ -1987,7 +2160,7 @@
         "+3Sg"
       ]
     ],
-    "paradigm": "verb-ai",
+    "paradigm": "VAI",
     "senses": [
       {
         "definition": "s/he sees, s/he has vision",
@@ -2007,48 +2180,7 @@
       "smushedAnalysis": "wâpiw+V+AI+Ind+3Sg",
       "stem": "wâpi-"
     },
-    "slug": "wapiw",
-    "ok": true
-  },
-  {
-    "head": "kiskinwahamâkosiw",
-    "analysis": [
-      [],
-      "kiskinwahamâkosiw",
-      [
-        "+V",
-        "+AI",
-        "+Ind",
-        "+3Sg"
-      ]
-    ],
-    "paradigm": "verb-ai",
-    "senses": [
-      {
-        "definition": "s/he learns",
-        "sources": [
-          "CW"
-        ]
-      },
-      {
-        "definition": "s/he is a student, s/he attends school",
-        "sources": [
-          "CW"
-        ]
-      },
-      {
-        "definition": "s/he is taught",
-        "sources": [
-          "CW"
-        ]
-      }
-    ],
-    "linguistInfo": {
-      "pos": "VAI-1",
-      "smushedAnalysis": "kiskinwahamâkosiw+V+AI+Ind+3Sg",
-      "stem": "kiskinwahamâkosi-"
-    },
-    "slug": "kiskinwahamakosiw1",
+    "slug": "wâpiw",
     "ok": true
   }
 ]

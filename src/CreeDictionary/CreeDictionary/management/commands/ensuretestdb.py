@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from CreeDictionary.API.models import Definition, Wordform
+from morphodict.lexicon.models import Wordform, Definition
 from CreeDictionary.CreeDictionary.ensure_data import ensure_wordform_paradigms
 from CreeDictionary.cvd import definition_vectors_path
 from CreeDictionary.utils import shared_res_dir

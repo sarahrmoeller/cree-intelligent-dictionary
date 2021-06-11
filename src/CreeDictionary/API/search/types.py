@@ -56,7 +56,7 @@ class SimpleLinguisticTag(LinguisticTag):
 
     @property
     def in_plain_english(self) -> str:
-        return LABELS.english.get(self.value) or "???"
+        return LABELS.english.get(self.value, self.value)
 
 
 class CompoundLinguisticTag(LinguisticTag):

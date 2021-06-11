@@ -5,12 +5,7 @@ from typing import Dict, List, NamedTuple, Set, Optional
 
 from colorama import init
 
-from CreeDictionary.API.models import (
-    Definition,
-    DictionarySource,
-    EnglishKeyword,
-    Wordform,
-)
+from morphodict.lexicon.models import Wordform, Definition, DictionarySource
 from CreeDictionary.DatabaseManager import xml_entry_lemma_finder
 from CreeDictionary.DatabaseManager.cree_inflection_generator import expand_inflections
 from CreeDictionary.DatabaseManager.log import DatabaseManagerLogger

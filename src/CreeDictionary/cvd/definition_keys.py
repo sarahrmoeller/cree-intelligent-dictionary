@@ -35,10 +35,9 @@ def definition_to_cvd_key(d: Definition) -> CvdKey:
             [
                 # Unfortunately, with our current setup, we need to specify all four
                 # of these for the result to be unique.
+                d.wordform.lemma.slug,
                 d.wordform.text,
-                d.wordform.inflectional_category,
-                d.wordform.analysis,
-                d.wordform.stem,
+                d.wordform.raw_analysis,
                 # This is just a disambiguator so we can have multiple definitions
                 # for the same word in a vector file without conflict.
                 d.id,
@@ -51,21 +50,19 @@ def definition_to_cvd_key(d: Definition) -> CvdKey:
 def cvd_key_to_wordform_query(s: CvdKey) -> WordformQuery:
     """Return kwargs for Wordform.objects.filter() to retrieve wordform
 
-    While unambiguous, likely too slow for general use.
+    While unambiguous, likely too slow for querying.
     """
-    text, inflectional_category, analysis, stem, _ = json.loads(s)
+    slug, text, raw_analysis, _ = json.loads(s)
     return {
         "text": text,
-        "inflectional_category": inflectional_category,
-        "analysis": analysis,
-        "stem": stem,
+        "lemma__slug": slug,
+        "raw_analysis": raw_analysis,
     }
 
 
 def wordform_query_matches(query: WordformQuery, wordform: Wordform):
     return (
         wordform.text == query["text"]
-        and wordform.inflectional_category == query["inflectional_category"]
-        and wordform.analysis == query["analysis"]
-        and wordform.stem == query["stem"]
+        and wordform.raw_analysis == query["raw_analysis"]
+        and wordform.lemma.slug == query["lemma__slug"]
     )

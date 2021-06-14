@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Collection, Iterable, Optional, Protocol
+from typing import Any, Collection, Iterable, Optional, Protocol, cast
 
 from CreeDictionary.CreeDictionary.paradigm.panes import Paradigm, ParadigmLayout
 
@@ -66,7 +66,7 @@ class ParadigmManager:
         return None
 
     def dynamic_paradigm_for(
-        self, *, lemma: str, word_class: str, size: str = ONLY_SIZE
+        self, *, lemma: Optional[str], word_class: str, size: str = ONLY_SIZE
     ) -> Optional[Paradigm]:
         """
         Returns a dynamic paradigm for the given lemma and word class.
@@ -78,7 +78,7 @@ class ParadigmManager:
             return None
 
         layout = size_options[size]
-        return self._inflect(layout, lemma)
+        return self._inflect(layout, cast(Any, lemma))
 
     def sizes_of(self, paradigm_name: str) -> Collection[str]:
         """

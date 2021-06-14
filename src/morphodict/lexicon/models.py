@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Literal, Optional, Union
+from typing import Dict, Literal, Optional, Union, Any
 from urllib.parse import quote
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -137,7 +137,7 @@ class Wordform(models.Model):
             # models.Index(fields=["pos"]),
         ]
 
-        constraints = [
+        constraints: list[Any] = [
             # models.UniqueConstraint(
             #     fields=("text", "analysis"),
             #     name="text_analysis_unique",

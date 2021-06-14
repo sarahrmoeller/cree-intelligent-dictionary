@@ -22,9 +22,8 @@ CvdKey = str
 
 class WordformQuery(TypedDict):
     text: str
-    inflectional_category: str
-    analysis: str
-    stem: str
+    lemma__slug: str
+    raw_analysis: str
 
 
 def definition_to_cvd_key(d: Definition) -> CvdKey:

@@ -53,10 +53,10 @@ class PresentationResult:
         self.preverbs = get_preverbs_from_head_breakdown(self.linguistic_breakdown_head)
 
         self.friendly_linguistic_breakdown_head = replace_user_friendly_tags(
-            t.strip("+") for t in self.linguistic_breakdown_head
+            list(t.strip("+") for t in self.linguistic_breakdown_head)
         )
         self.friendly_linguistic_breakdown_tail = replace_user_friendly_tags(
-            t.strip("+") for t in self.linguistic_breakdown_tail
+            list(t.strip("+") for t in self.linguistic_breakdown_tail)
         )
 
     def serialize(self) -> SerializedPresentationResult:
@@ -90,7 +90,9 @@ class PresentationResult:
         We chunk based on the English relabelleings!
         """
         return tuple(
-            linguistic_tag_from_fst_tags([t.strip("+") for t in fst_tags])
+            linguistic_tag_from_fst_tags(
+                tuple(cast(FSTTag, t.strip("+")) for t in fst_tags)
+            )
             for fst_tags in LABELS.english.chunk(self.linguistic_breakdown_tail)
         )
 
@@ -159,7 +161,7 @@ def get_preverbs_from_head_breakdown(
             # use altlabel.tsv to figure out the preverb
 
             # ling_short looks like: "Preverb: âpihci-"
-            ling_short = LABELS.linguistic_short.get(tag.rstrip("+"))
+            ling_short = LABELS.linguistic_short.get(cast(FSTTag, tag.rstrip("+")))
             if ling_short is not None and ling_short != "":
                 # convert to "âpihci" by dropping prefix and last character
                 normative_preverb_text = ling_short[len("Preverb: ") :]

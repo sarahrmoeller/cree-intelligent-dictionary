@@ -4,7 +4,7 @@ import dataclasses
 import json
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import NewType, Iterable, Tuple, Optional
+from typing import NewType, Iterable, Tuple, Optional, cast
 
 from typing_extensions import Protocol
 
@@ -12,7 +12,7 @@ from morphodict.lexicon.models import Wordform, wordform_cache
 from CreeDictionary.API.schema import SerializedLinguisticTag
 from CreeDictionary.API.search import ranking
 from CreeDictionary.CreeDictionary.relabelling import LABELS
-from CreeDictionary.utils.types import FSTTag
+from CreeDictionary.utils.types import FSTTag, Label
 
 Preverb = Wordform
 Lemma = NewType("Lemma", Wordform)
@@ -56,7 +56,7 @@ class SimpleLinguisticTag(LinguisticTag):
 
     @property
     def in_plain_english(self) -> str:
-        return LABELS.english.get(self.value, self.value)
+        return cast(str, LABELS.english.get(self.value, cast(Label, self.value)))
 
 
 class CompoundLinguisticTag(LinguisticTag):

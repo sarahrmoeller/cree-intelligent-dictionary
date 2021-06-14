@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Dict, Literal, Optional, Union
 from urllib.parse import quote
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
 from django.db.models import Max, Q
 from django.urls import reverse
@@ -51,13 +52,24 @@ class WordformLemmaManager(models.Manager):
 WordformKey = Union[int, tuple[str, str]]
 
 
+class DiacriticPreservingJsonEncoder(DjangoJSONEncoder):
+    """Stores Unicode strings, e.g., "pê", in the database
+
+    Instead of ASCII-fied "p\u00ea".
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs = {**kwargs, "ensure_ascii": False}
+        super().__init__(*args, **kwargs)
+
+
 class Wordform(models.Model):
     # Queries always do .select_related("lemma"):
     objects = WordformLemmaManager()
 
     text = models.CharField(max_length=MAX_WORDFORM_LENGTH)
 
-    raw_analysis = models.JSONField(null=True)
+    raw_analysis = models.JSONField(null=True, encoder=DiacriticPreservingJsonEncoder)
 
     paradigm = models.CharField(
         max_length=50,
@@ -279,6 +291,25 @@ class TargetLanguageKeyword(models.Model):
 
     def __repr__(self) -> str:
         return f"<EnglishKeyword(text={self.text!r} of {self.wordform!r} ({self.id})>"
+
+    class Meta:
+        indexes = [models.Index(fields=["text"])]
+
+
+class SourceLanguageKeyword(models.Model):
+    """Variant spellings for source-language items that do not have an analysis.
+
+    When searching for things that do have an analysis, the relaxed analyzer can
+    handle spelling variations, differences in diacritics, and so on.
+
+    For things that aren’t analyzable—Cree preverbs for now, maybe phrases
+    later—we store variants here, such as the version without diacritics, so
+    that they’re still searchable even if what the user typed in isn’t exact.
+    """
+
+    text = models.CharField(max_length=20)
+
+    wordform = models.ForeignKey(Wordform, on_delete=models.CASCADE)
 
     class Meta:
         indexes = [models.Index(fields=["text"])]

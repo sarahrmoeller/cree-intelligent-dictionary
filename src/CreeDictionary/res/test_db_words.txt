@@ -60,24 +60,20 @@ nisto
 
 # preverb examples
 ati-
-nitaw
 kâh-
 kîmôci-
 nitawi-
-poni-
+pôni-
 pê-
 
 # reduplication stem examples
-sa
-poni
-pe
+sa-
 
 # regression testing
 atâhk
 acâhkos
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/176
 ayiwinisa
-ayiwinis
 minôs
 minôsis
 
@@ -90,9 +86,6 @@ acâhkosa kâ-otakohpit
 
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/213
 # Cree word forms not getting some or all analyses
-maskos
-nimaskom
-niskak
 
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/218
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/223
@@ -108,7 +101,6 @@ pipon
 # some inflected forms not showing up
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/190
 kîsikâw
-ê-kîsikâk
 
 # Some paradigms of homographic entries do not show up
 nôhtêpayiw
@@ -116,7 +108,6 @@ ayâw
 
 # some entries do not show up
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/213
-maskwak
 
 # prefix search fails with added vowel length
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/429
@@ -146,3 +137,4 @@ nêwokâtêw
 
 maskwa
 niska
+sôskopayîs

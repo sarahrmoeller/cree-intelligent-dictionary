@@ -5,12 +5,14 @@ from pathlib import Path
 
 from django.core.management import BaseCommand, call_command
 
+from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
 from CreeDictionary.utils.english_keyword_extraction import stem_keywords
 from morphodict.lexicon.models import (
     Wordform,
     Definition,
     DictionarySource,
     TargetLanguageKeyword,
+    SourceLanguageKeyword,
 )
 
 logger = logging.getLogger(__name__)
@@ -45,6 +47,7 @@ class Command(BaseCommand):
         data = json.loads(Path(json_file).read_text())
         for entry in data:
             if existing := Wordform.objects.filter(slug=entry["slug"]).first():
+                # Cascade should take care of all related objects.
                 existing.delete()
 
             wf = Wordform.objects.create(
@@ -56,6 +59,30 @@ class Command(BaseCommand):
             )
             wf.lemma = wf
             wf.save()
+
+            # Unanalyzed forms: phrases, Cree preverbs, &c.
+            if wf.raw_analysis is None:
+                variants = set()
+
+                for piece in wf.text.split():
+
+                    for diacritic_variant in [
+                        piece,
+                        # FIXME: Cree-specific
+                        remove_cree_diacritics(piece),
+                    ]:
+                        variants.add(diacritic_variant)
+                        if diacritic_variant.endswith("-"):
+                            variants.add(diacritic_variant[:-1])
+                        if diacritic_variant.startswith("-"):
+                            variants.add(diacritic_variant[1:])
+                        if diacritic_variant.startswith(
+                            "-"
+                        ) and diacritic_variant.endswith("-"):
+                            variants.add(diacritic_variant[1:-1])
+
+                for v in variants:
+                    SourceLanguageKeyword.objects.create(text=v, wordform=wf)
 
             keywords = set()
 

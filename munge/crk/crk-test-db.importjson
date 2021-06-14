@@ -34,6 +34,50 @@
     "ok": true
   },
   {
+    "head": "acâhkos kâ-osôsit",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "comet, tailed star",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "INM < NA-1 + VAI-1",
+      "stem": "acâhkos- osôsi-"
+    },
+    "slug": "acâhkos_kâ-osôsit",
+    "ok": true
+  },
+  {
+    "head": "acâhkosa kâ-otakohpit",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "Starblanket",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "Cree chief, signatory to Treaty 4",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "INM < NA-1 + VAI-1",
+      "stem": "acâhkos- otakohpi-"
+    },
+    "slug": "acâhkosa_kâ-otakohpit",
+    "ok": true
+  },
+  {
     "head": "amisk",
     "analysis": [
       [],
@@ -254,6 +298,36 @@
       "stem": "atâhkw-"
     },
     "slug": "atâhk",
+    "ok": true
+  },
+  {
+    "head": "ati-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "start to, begin to, beginning",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "progressively, proceed to, going on, progressing",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "on the way",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "ati-",
     "ok": true
   },
   {
@@ -830,6 +904,47 @@
     "ok": true
   },
   {
+    "head": "kâh-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "would, ought to",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "could",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "likely to",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "kâh-1",
+    "ok": true
+  },
+  {
+    "head": "kâh-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "kâh-2",
+    "ok": true
+  },
+  {
     "head": "kiskinwahamâkosiw",
     "analysis": [
       [],
@@ -868,6 +983,30 @@
       "stem": "kiskinwahamâkosi-"
     },
     "slug": "kiskinwahamâkosiw",
+    "ok": true
+  },
+  {
+    "head": "kîmôci-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "secretly, in secret, stealthily, by stealth",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "privately, in private",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "kîmôci-1",
     "ok": true
   },
   {
@@ -1502,6 +1641,30 @@
     "ok": true
   },
   {
+    "head": "nitawi-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "go and, go to",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "engaged in",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "nitawi-",
+    "ok": true
+  },
+  {
     "head": "niya",
     "analysis": [
       [],
@@ -1804,6 +1967,31 @@
     "ok": true
   },
   {
+    "head": "oskana kâ-asastêki",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "Regina, SK",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "\"Pile-o'-Bones\"",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "INM < NDI-1 + VII-2v",
+      "stem": "oskan- asastê-"
+    },
+    "slug": "oskana_kâ-asastêki",
+    "ok": true
+  },
+  {
     "head": "otôskwanihk",
     "analysis": [
       [],
@@ -1906,6 +2094,42 @@
       "smushedAnalysis": "ôma+Ipc"
     },
     "slug": "ôma2",
+    "ok": true
+  },
+  {
+    "head": "pê-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "come and, come to",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "towards, approaching",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "hither",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "thence, from there on down",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "pê-",
     "ok": true
   },
   {
@@ -2024,6 +2248,69 @@
       "stem": "pipon-"
     },
     "slug": "pipon2",
+    "ok": true
+  },
+  {
+    "head": "pôni-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [
+      {
+        "definition": "stop, terminate, cease",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "after",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "pôni-",
+    "ok": true
+  },
+  {
+    "head": "sa-",
+    "analysis": null,
+    "paradigm": null,
+    "senses": [],
+    "linguistInfo": {
+      "pos": "IPV"
+    },
+    "slug": "sa-",
+    "ok": true
+  },
+  {
+    "head": "sôskopayîs",
+    "analysis": [
+      [],
+      "sôskopayîs",
+      [
+        "+N",
+        "+A",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NA",
+    "senses": [
+      {
+        "definition": "skidoo, snowmobile",
+        "sources": [
+          "CW"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NA-1",
+      "smushedAnalysis": "sôskopayîs+N+A+Sg",
+      "stem": "sôskopaýîs-"
+    },
+    "slug": "sôskopaýîs",
     "ok": true
   },
   {

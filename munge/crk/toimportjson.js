@@ -161,34 +161,8 @@ function smushAnalysis(lemma_with_affixes) {
   return [prefixTags.join(""), lemma, suffixTags.join("")].join("");
 }
 
-/**
- * A dictionary in importjson format.
- */
-class ImportJsonDictionary {
-  constructor() {
-    this._entries = [];
-  }
-
-  // TODO: return error information if unable to process input
-  addFromNdjson(ndjsonObject) {
-    const head = ndjsonObject.lemma?.plains;
-
-    if (!head) {
-      return;
-    }
-
-    if (head.includes(" ")) {
-      // TODO: handle phrases
-      return;
-    }
-    if (head.startsWith("-") || head.endsWith("-")) {
-      // TODO: handle morphemes
-      return;
-    }
-
-    let ok = true;
-
-    const pos = ndjsonObject.dataSources?.CW?.pos;
+function inferAnalysis({head, pos, key}) {
+  let ok = false;
 
     const analyses = crkAnalyzer.lookup_lemma_with_affixes(head);
     // Does FST analysis match POS from toolbox file?
@@ -221,28 +195,68 @@ class ImportJsonDictionary {
         const bestMatch = matchesWithMinTagCount[0];
         analysis = bestMatch.analysis;
         paradigm = bestMatch.paradigm;
+        ok = true;
       } else if (getTieBreaker(matchesWithMinTagCount.map(m => m.analysis))) {
         const tieBreakerAnalysis = getTieBreaker(matchesWithMinTagCount.map(m => m.analysis));
-        let found = false;
-
         for (const m of matchesWithMinTagCount) {
           if (m.analysis === tieBreakerAnalysis) {
             analysis = m.analysis;
             paradigm = m.paradigm;
-            found = true;
+            ok = true;
             break;
           }
         }
-        if (!found) {
+        if (!ok) {
           throw Error("tie breaker exists but was not applied");
         }
       } else {
-        console.log(`${matches.length} matches for ${ndjsonObject.key}`);
+        console.log(`${matches.length} matches for ${key}`);
         ok = false;
       }
     } else {
-      console.log(`${matches.length} matches for ${ndjsonObject.key}`);
+      console.log(`${matches.length} matches for ${key}`);
       ok = false;
+    }
+
+    return { analysis, paradigm, ok};
+}
+
+/**
+ * A dictionary in importjson format.
+ */
+class ImportJsonDictionary {
+  constructor() {
+    this._entries = [];
+    this._seenLemmas = new Set();
+  }
+
+  // TODO: return error information if unable to process input
+  addFromNdjson(ndjsonObject) {
+    const head = ndjsonObject.lemma?.plains;
+
+    if (!head) {
+      return;
+    }
+
+    const pos = ndjsonObject.dataSources?.CW?.pos;
+
+    if (head.startsWith("-") || (head.endsWith("-") && pos !== 'IPV')) {
+      // TODO: handle morphemes
+      return;
+    }
+
+    let analysis, paradigm;
+    let ok = false;
+    if (pos === 'IPV') {
+      analysis = null;
+      paradigm = null;
+      ok = true;
+    } else if (head.includes(' ')) {
+      analysis = null;
+      paradigm = null;
+      ok = true;
+    } else {
+      ({analysis, paradigm, ok} = inferAnalysis({head, pos, key: ndjsonObject.key}));
     }
 
     const linguistInfo = { pos };
@@ -263,6 +277,7 @@ class ImportJsonDictionary {
       slug: ndjsonObject.key,
       ok,
     });
+    this._seenLemmas.add(head);
   }
 
   entries() {
@@ -336,6 +351,14 @@ async function main() {
     }
 
     importJsonDictionary.addFromNdjson(obj);
+  }
+
+  if (argv.testWordsOnly) {
+    for (const w of testDbWords) {
+      if (!importJsonDictionary._seenLemmas.has(w)) {
+        console.log(`Warning: test_db_words.txt entry ${w} not imported`);
+      }
+    }
   }
 
   const formattted = JSON.stringify(importJsonDictionary.entries(), null, 2);

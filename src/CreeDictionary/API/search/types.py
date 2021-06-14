@@ -156,6 +156,15 @@ class Result:
                     self.cosine_vector_distance = min(
                         self.cosine_vector_distance, other.cosine_vector_distance
                     )
+                elif field_name == "query_wordform_edit_distance":
+                    self.query_wordform_edit_distance = min(
+                        v
+                        for v in (
+                            self.query_wordform_edit_distance,
+                            other.query_wordform_edit_distance,
+                        )
+                        if v is not None
+                    )
                 else:
                     setattr(self, field_name, other_value)
 
@@ -176,7 +185,7 @@ class Result:
 
     analyzable_inflection_match: Optional[bool] = None
 
-    is_preverb_match: Optional[bool] = None
+    source_language_keyword_match: list[str] = field(default_factory=list)
 
     is_cw_as_is_wordform: Optional[bool] = None
 
@@ -213,7 +222,7 @@ class Result:
             or self.source_language_affix_match is not None
             or self.analyzable_inflection_match
             or self.is_cw_as_is_wordform
-            or self.is_preverb_match
+            or self.source_language_keyword_match
             or self.pronoun_as_is_match
         )
 

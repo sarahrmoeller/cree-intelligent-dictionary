@@ -26,7 +26,7 @@ def test_when_linguistic_breakdown_absent():
 
     result = search_results[0]
     assert result.wordform.text == "pê-"
-    assert result.wordform.analysis == "pê-+Ipv"
+    assert result.wordform.analysis is None
     assert result.friendly_linguistic_breakdown_head == []
     assert result.friendly_linguistic_breakdown_tail == ["like: pê-"]
 

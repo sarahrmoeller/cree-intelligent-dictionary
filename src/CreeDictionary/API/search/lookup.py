@@ -1,25 +1,22 @@
 from __future__ import annotations
 
 import logging
-from typing import Iterable, Set
+from typing import Iterable
 
-from CreeDictionary.CreeDictionary import hfstol
+from django.db.models import Q
+
 from CreeDictionary.utils import (
     get_modified_distance,
-    fst_analysis_parser,
-    PartOfSpeech,
 )
-from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
 from CreeDictionary.utils.english_keyword_extraction import stem_keywords
 from morphodict.analysis import (
-    relaxed_analyzer,
     strict_generator,
-    RichAnalysis,
     rich_analyze_relaxed,
 )
-from morphodict.lexicon.models import Wordform, wordform_cache
+from morphodict.lexicon.models import Wordform, SourceLanguageKeyword
 from . import core
 from .types import Result
+from ...utils.cree_lev_dist import remove_cree_diacritics
 
 logger = logging.getLogger(__name__)
 
@@ -63,13 +60,6 @@ def fetch_results(search_run: core.SearchRun):
         # When the user query is outside of paradigm tables
         # e.g. mad preverb and reduplication: ê-mâh-misi-nâh-nôcihikocik
         # e.g. Initial change: nêpât: {'IC+nipâw+V+AI+Cnj+3Sg'}
-
-        # lemma = analysis.lemma
-        #
-        # lemma_wc = fst_analysis_parser.extract_lemma_text_and_word_class(analysis)
-        # if lemma_wc is None:
-        #     logger.error(f"fst_analysis_parser cannot understand analysis {analysis}")
-        #     continue
 
         normatized_form_for_analysis = strict_generator().lookup(analysis.smushed())
         if len(normatized_form_for_analysis) == 0:
@@ -121,17 +111,17 @@ def fetch_results(search_run: core.SearchRun):
                 )
             )
 
-    return
-    # as per https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/161
-    # preverbs should be presented
-    # exhaustively search preverbs here (since we can't use fst on preverbs.)
-    for preverb_wf in fetch_preverbs(search_run.internal_query):
+    res = SourceLanguageKeyword.objects.filter(
+        Q(text=search_run.internal_query)
+        | Q(text=remove_cree_diacritics(search_run.internal_query).lower())
+    )
+    for kw in res:
         search_run.add_result(
             Result(
-                preverb_wf,
-                is_preverb_match=True,
+                kw.wordform,
+                source_language_keyword_match=[kw.text],
                 query_wordform_edit_distance=get_modified_distance(
-                    preverb_wf.text, search_run.internal_query
+                    search_run.internal_query, kw.wordform.text
                 ),
             )
         )
@@ -159,18 +149,3 @@ def filter_cw_wordforms(queryset: Iterable[Wordform]) -> Iterable[Wordform]:
             if "CW" in definition.source_ids:
                 yield wordform
                 break
-
-
-def fetch_preverbs(user_query: str) -> Set[Wordform]:
-    """
-    Search for preverbs in the database by matching the circumflex-stripped forms. MD only contents are filtered out.
-    trailing dash relaxation is used
-
-    :param user_query: unicode normalized, to_lower-ed
-    """
-
-    if user_query.endswith("-"):
-        user_query = user_query[:-1]
-    user_query = remove_cree_diacritics(user_query)
-
-    return wordform_cache.PREVERB_ASCII_LOOKUP[user_query]

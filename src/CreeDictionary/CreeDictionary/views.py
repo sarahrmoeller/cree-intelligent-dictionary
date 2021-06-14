@@ -22,7 +22,7 @@ from CreeDictionary.phrase_translate.translate import (
     eng_phrase_to_crk_features_fst,
     eng_verb_entry_to_inflected_phrase_fst,
 )
-from CreeDictionary.utils import ParadigmSize
+from CreeDictionary.utils import ParadigmSize, WordClass
 from crkeng.app.preferences import DisplayMode, ParadigmLabel
 from morphodict.preference.views import ChangePreferenceView
 
@@ -366,31 +366,24 @@ def paradigm_for(
     manager = default_paradigm_manager()
 
     if name := wordform.paradigm:
-        if static_paradigm := manager.static_paradigm_for(name):
-            return static_paradigm
-        logger.warning(
-            "Could not retrieve static paradigm %r " "associated with wordform %r",
-            name,
-            wordform,
-        )
-        # TODO: better return value for when a paradigm cannot be found
-        # return []
+        size = convert_crkeng_paradigm_size_to_size(paradigm_size)
 
-        # TODO: use new-style paradigms for other sizes in addition to FULL
-        # Requires:
-        #  - "basic" size paradigm layouts to be created
-        #  - paradigm manager must support multiple sizes
-        #  - relabelling must work to use linguistic layouts
-        # if (
-        #     paradigm_size == ParadigmSize.FULL
-        # ):  # and (word_class := wordform.word_class):
-        dynamic_paradigm = manager.dynamic_paradigm_for(
-            lemma=wordform.text, word_class=wordform.paradigm
-        )
-        if dynamic_paradigm:
-            return dynamic_paradigm
-        return []
+        return manager.paradigm_for(name, lemma=wordform.analysis.lemma, size=size)
 
-        # try returning an old-style paradigm: may return []
-        # return generate_paradigm(wordform, paradigm_size)
-        return []
+    # try returning an old-style paradigm: may return []
+    return generate_paradigm(wordform, paradigm_size)
+
+
+def convert_crkeng_paradigm_size_to_size(paradigm_size: ParadigmSize):
+    """
+    Returns the crkeng layout size, which is currently:
+     - basic
+     - full
+    """
+    return {
+        ParadigmSize.FULL: "full",
+        ParadigmSize.BASIC: "basic",
+        # The linguistic "size" does not, as of yet exist, however its content is
+        # exactly the same as the full layout.
+        ParadigmSize.LINGUISTIC: "full",
+    }[paradigm_size]

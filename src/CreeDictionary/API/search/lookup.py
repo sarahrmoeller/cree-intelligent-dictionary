@@ -86,7 +86,6 @@ def fetch_results(search_run: core.SearchRun):
                 analysis.tag_intersection_count(lwf.analysis)
                 for lwf in possible_lemma_wordforms
             )
-            print(f"{max_tag_intersection_count=}")
             possible_lemma_wordforms = [
                 lwf
                 for lwf in possible_lemma_wordforms

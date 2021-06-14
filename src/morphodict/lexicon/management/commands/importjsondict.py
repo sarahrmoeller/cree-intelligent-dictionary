@@ -71,15 +71,14 @@ class Command(BaseCommand):
                         # FIXME: Cree-specific
                         remove_cree_diacritics(piece),
                     ]:
-                        variants.add(diacritic_variant)
-                        if diacritic_variant.endswith("-"):
-                            variants.add(diacritic_variant[:-1])
-                        if diacritic_variant.startswith("-"):
-                            variants.add(diacritic_variant[1:])
-                        if diacritic_variant.startswith(
-                            "-"
-                        ) and diacritic_variant.endswith("-"):
-                            variants.add(diacritic_variant[1:-1])
+                        variants.update(
+                            [
+                                diacritic_variant,
+                                diacritic_variant.lstrip("-"),
+                                diacritic_variant.rstrip("-"),
+                                diacritic_variant.strip("-"),
+                            ]
+                        )
 
                 for v in variants:
                     SourceLanguageKeyword.objects.create(text=v, wordform=wf)

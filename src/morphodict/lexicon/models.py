@@ -112,6 +112,7 @@ class Wordform(models.Model):
     linguist_info_stem = models.CharField(
         max_length=128,
         blank=True,
+        null=True,
     )
 
     linguist_info_pos = models.CharField(

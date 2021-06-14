@@ -31,13 +31,10 @@ class APIConfig(AppConfig):
             self.perform_time_consuming_initializations()
 
     def perform_time_consuming_initializations(self):
-        pass
-        # from CreeDictionary.API.models import wordform_cache
-        # from CreeDictionary.API.search import affix
-        #
-        # logger.debug("preloading caches")
-        # affix.cache.preload()
-        # wordform_cache.preload()
-        # cvd.preload_models()
-        #
-        # logger.debug("done")
+        from CreeDictionary.API.search import affix
+
+        logger.debug("preloading caches")
+        affix.cache.preload()
+        cvd.preload_models()
+
+        logger.debug("done")

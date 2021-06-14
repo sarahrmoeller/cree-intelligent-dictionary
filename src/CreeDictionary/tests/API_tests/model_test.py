@@ -4,12 +4,13 @@ import logging
 import pytest
 from hypothesis import assume, given
 
-from morphodict.lexicon.models import Wordform
 from CreeDictionary.API.search import search
 from CreeDictionary.API.search.util import to_sro_circumflex
 from CreeDictionary.tests.conftest import lemmas
+from morphodict.lexicon.models import Wordform
 
 
+@pytest.mark.skip("FIXME: no analysis exists for preverbs")
 @pytest.mark.django_db
 def test_when_linguistic_breakdown_absent():
     # pê- is a preverb

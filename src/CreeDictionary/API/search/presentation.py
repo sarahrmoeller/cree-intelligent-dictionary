@@ -53,10 +53,10 @@ class PresentationResult:
         self.preverbs = get_preverbs_from_head_breakdown(self.linguistic_breakdown_head)
 
         self.friendly_linguistic_breakdown_head = replace_user_friendly_tags(
-            self.linguistic_breakdown_head
+            t.strip("+") for t in self.linguistic_breakdown_head
         )
         self.friendly_linguistic_breakdown_tail = replace_user_friendly_tags(
-            self.linguistic_breakdown_tail
+            t.strip("+") for t in self.linguistic_breakdown_tail
         )
 
     def serialize(self) -> SerializedPresentationResult:
@@ -90,7 +90,7 @@ class PresentationResult:
         We chunk based on the English relabelleings!
         """
         return tuple(
-            linguistic_tag_from_fst_tags(fst_tags)
+            linguistic_tag_from_fst_tags([t.strip("+") for t in fst_tags])
             for fst_tags in LABELS.english.chunk(self.linguistic_breakdown_tail)
         )
 
@@ -109,14 +109,14 @@ def serialize_wordform(wordform) -> SerializedWordform:
     result["lemma_url"] = wordform.get_absolute_url()
 
     # Displayed in the word class/inflection help:
-    # result["inflectional_category_plain_english"] = LABELS.english.get(
-    #     wordform.inflectional_category
-    # )
-    # result["inflectional_category_linguistic"] = LABELS.linguistic_long.get(
-    #     wordform.inflectional_category
-    # )
-    # result["wordclass_emoji"] = wordform.get_emoji_for_cree_wordclass()
-    # result["wordclass"] = wordform.wordclass_text
+    result["inflectional_category_plain_english"] = LABELS.english.get(
+        wordform.linguist_info_pos
+    )
+    result["inflectional_category_linguistic"] = LABELS.linguistic_long.get(
+        wordform.linguist_info_pos
+    )
+    result["wordclass_emoji"] = LABELS.emoji.get(wordform.linguist_info_pos)
+    result["wordclass"] = wordform.linguist_info_pos
 
     return result
 
@@ -159,11 +159,13 @@ def get_preverbs_from_head_breakdown(
             # use altlabel.tsv to figure out the preverb
 
             # ling_short looks like: "Preverb: âpihci-"
-            ling_short = LABELS.linguistic_short.get(tag)
+            ling_short = LABELS.linguistic_short.get(tag.rstrip("+"))
             if ling_short is not None and ling_short != "":
                 # convert to "âpihci" by dropping prefix and last character
-                normative_preverb_text = ling_short[len("Preverb: ") : -1]
-                preverb_results = lookup.fetch_preverbs(normative_preverb_text)
+                normative_preverb_text = ling_short[len("Preverb: ") :]
+                preverb_results = Wordform.objects.filter(
+                    text=normative_preverb_text, raw_analysis__isnull=True
+                )
 
                 # find the one that looks the most similar
                 if preverb_results:

@@ -9,7 +9,7 @@ from morphodict.lexicon.models import Wordform
 from CreeDictionary.CreeDictionary.paradigm.filler import Layout, ParadigmFiller
 from CreeDictionary.CreeDictionary.paradigm.manager import ParadigmManager
 from CreeDictionary.utils import shared_res_dir
-from CreeDictionary.utils.enums import ParadigmSize
+from CreeDictionary.utils.enums import ParadigmSize, WordClass
 from CreeDictionary.utils.fst_analysis_parser import extract_word_class
 
 
@@ -20,10 +20,16 @@ def generate_paradigm(lemma: Wordform, size: ParadigmSize) -> list[Layout]:
     :return: A list of filled paradigm tables.
     """
     # TODO: is there a better way to determine if this lemma inflects?
-    word_class = lemma.paradigm
+    paradigm = lemma.paradigm
 
-    if word_class is None:
+    if paradigm is None:
         # Cannot determine how the the lemma inflects; no paradigm :/
+        return []
+    try:
+        word_class = WordClass[paradigm]
+    except KeyError:
+        return []
+    if word_class is None:
         return []
 
     return paradigm_filler().fill_paradigm(lemma.text, word_class, size)

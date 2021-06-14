@@ -77,9 +77,6 @@ class ParadigmFiller:
         :returns: filled paradigm tables
         """
 
-        if not category.has_inflections():
-            return []
-
         # We want to lookup all of the inflections in bulk,
         # so set up some data structures that will allow us to:
         #  - store all unique things to lookup

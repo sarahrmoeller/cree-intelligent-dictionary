@@ -56,6 +56,8 @@ class Command(BaseCommand):
                 paradigm=entry.get("paradigm", None),
                 slug=entry["slug"],
                 is_lemma=True,
+                linguist_info_stem=entry["linguistInfo"].get("stem", None),
+                linguist_info_pos=entry["linguistInfo"].get("pos", None),
             )
             wf.lemma = wf
             wf.save()

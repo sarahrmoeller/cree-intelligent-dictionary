@@ -6,7 +6,7 @@ const { readFile, writeFile } = require("fs/promises");
 const { join: joinPath, resolve: resolvePath } = require("path");
 const { inspect } = require("util");
 const yargs = require("yargs");
-const { intersection, min } = require("lodash");
+const { intersection, min, isEqual } = require("lodash");
 
 const srcPath = resolvePath(__dirname, "..", "..", "src");
 
@@ -43,6 +43,29 @@ const demonstrativePronouns = new Set([
   "anihi",
   "nêhi",
 ]);
+
+// If we’ve whittled choices down to just the analyses listed, take the first
+// one in the list.
+const tieBreakers = [
+    ["maskwa+N+A+Sg", "maskwa+N+A+Obv"],
+    ["niska+N+A+Sg", "niska+N+A+Obv"],
+];
+
+function getTieBreaker(analyses) {
+  // FIXME: on all but tiny input dictionaries, tieBreakers should be turned
+  // into a map by lemma.
+  const smushed = analyses.map(a => smushAnalysis(a));
+  for (const tb of tieBreakers) {
+    if (isEqual(tb, smushed)) {
+      for (const a of analyses) {
+        if (smushAnalysis(a) === tb[0]) {
+          return a;
+        }
+      }
+    }
+  }
+  return null;
+}
 
 async function readTestDbWords() {
   const fileContents = (
@@ -198,6 +221,21 @@ class ImportJsonDictionary {
         const bestMatch = matchesWithMinTagCount[0];
         analysis = bestMatch.analysis;
         paradigm = bestMatch.paradigm;
+      } else if (getTieBreaker(matchesWithMinTagCount.map(m => m.analysis))) {
+        const tieBreakerAnalysis = getTieBreaker(matchesWithMinTagCount.map(m => m.analysis));
+        let found = false;
+
+        for (const m of matchesWithMinTagCount) {
+          if (m.analysis === tieBreakerAnalysis) {
+            analysis = m.analysis;
+            paradigm = m.paradigm;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          throw Error("tie breaker exists but was not applied");
+        }
       } else {
         console.log(`${matches.length} matches for ${ndjsonObject.key}`);
         ok = false;

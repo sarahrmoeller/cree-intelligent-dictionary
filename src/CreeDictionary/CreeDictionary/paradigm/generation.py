@@ -20,7 +20,7 @@ def generate_paradigm(lemma: Wordform, size: ParadigmSize) -> list[Layout]:
     :return: A list of filled paradigm tables.
     """
     # TODO: is there a better way to determine if this lemma inflects?
-    word_class = extract_word_class(lemma.analysis)
+    word_class = lemma.paradigm
 
     if word_class is None:
         # Cannot determine how the the lemma inflects; no paradigm :/

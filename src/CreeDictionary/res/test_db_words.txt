@@ -143,3 +143,6 @@ atamiskawêw
 âcimowin
 # this lemma can be NA, VAI, and VII
 nêwokâtêw
+
+maskwa
+niska

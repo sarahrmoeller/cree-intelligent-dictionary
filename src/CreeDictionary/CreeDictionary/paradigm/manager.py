@@ -8,7 +8,7 @@ from typing import Any, Collection, Iterable, Optional, Protocol
 from CreeDictionary.CreeDictionary.paradigm.panes import Paradigm, ParadigmLayout
 
 # I would *like* a singleton for this, but, currently, it interacts poorly with mypy :/
-ONLY_SIZE = "<only-size>"
+ONLY_SIZE = "basic"
 
 logger = logging.getLogger(__name__)
 
@@ -40,11 +40,11 @@ class ParadigmManager:
         Returns a paradigm for the given paradigm name. If a lemma is given, this is
         substituted into the dynamic paradigm.
         """
-        if lemma is not None:
-            paradigm = self.dynamic_paradigm_for(
-                lemma=lemma, word_class=paradigm_name, size=size
-            )
-        else:
+
+        paradigm = self.dynamic_paradigm_for(
+            lemma=lemma, word_class=paradigm_name, size=size
+        )
+        if not paradigm:
             paradigm = self.static_paradigm_for(paradigm_name, size=size)
 
         if paradigm is None:
@@ -154,7 +154,7 @@ def _load_all_sizes_for_paradigm(directory: Path):
 
     for layout_file in directory.glob("*.tsv"):
         size = layout_file.stem
-        assert size != ONLY_SIZE, f"size name cannot clash with sentinel value: {size}"
+        # assert size != ONLY_SIZE, f"size name cannot clash with sentinel value: {size}"
         yield paradigm_name, size, _load_layout_file(layout_file)
 
 

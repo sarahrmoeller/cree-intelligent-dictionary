@@ -969,6 +969,46 @@
     "ok": true
   },
   {
+    "head": "maskwa",
+    "analysis": [
+      [],
+      "maskwa",
+      [
+        "+N",
+        "+A",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NA",
+    "senses": [
+      {
+        "definition": "bear, black bear",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "Ursus Major constellation",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "A bear.",
+        "sources": [
+          "MD"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NA-4w",
+      "smushedAnalysis": "maskwa+N+A+Sg",
+      "stem": "maskw-"
+    },
+    "slug": "maskwa",
+    "ok": true
+  },
+  {
     "head": "minôs",
     "analysis": [
       [],
@@ -1394,6 +1434,40 @@
       "stem": "nipiy-"
     },
     "slug": "nipiy",
+    "ok": true
+  },
+  {
+    "head": "niska",
+    "analysis": [
+      [],
+      "niska",
+      [
+        "+N",
+        "+A",
+        "+Sg"
+      ]
+    ],
+    "paradigm": "NA",
+    "senses": [
+      {
+        "definition": "goose",
+        "sources": [
+          "CW"
+        ]
+      },
+      {
+        "definition": "A goose.",
+        "sources": [
+          "MD"
+        ]
+      }
+    ],
+    "linguistInfo": {
+      "pos": "NA-4",
+      "smushedAnalysis": "niska+N+A+Sg",
+      "stem": "nisk-"
+    },
+    "slug": "niska",
     "ok": true
   },
   {

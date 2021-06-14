@@ -220,10 +220,9 @@ def test_search_text_with_ambiguous_word_classes():
     """
     # pipon can be viewed as a Verb as well as a Noun
     results = search(query="pipon").presentation_results()
-    assert {r.lemma_wordform.pos for r in results if r.wordform.text == "pipon"} == {
-        "N",
-        "V",
-    }
+    assert {
+        r.lemma_wordform.paradigm for r in results if r.wordform.text == "pipon"
+    } == {"NI", "VII"}
 
 
 @pytest.mark.django_db
@@ -256,10 +255,10 @@ def test_lemma_and_syncretic_form_ranking(lemma):
 
     results = search(query=lemma).presentation_results()
     assert len(results) >= 2
-    maskwa_results = [res for res in results if res.lemma_wordform.text == lemma]
-    assert len(maskwa_results) >= 2
-    assert any(res.is_lemma for res in maskwa_results)
-    first_result = maskwa_results[0]
+    search_results = [res for res in results if res.lemma_wordform.text == lemma]
+    assert len(search_results) >= 2
+    assert any(res.is_lemma for res in search_results)
+    first_result = search_results[0]
     assert first_result.is_lemma, f"unexpected first result: {first_result}"
 
 

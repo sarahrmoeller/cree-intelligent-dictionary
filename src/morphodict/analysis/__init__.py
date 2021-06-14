@@ -95,3 +95,6 @@ class RichAnalysis:
         if not isinstance(other, RichAnalysis):
             return NotImplemented
         return self._tuple == other.tuple
+
+    def __repr__(self):
+        return f"RichAnalysis({[self.prefix_tags, self.lemma, self.suffix_tags]!r})"

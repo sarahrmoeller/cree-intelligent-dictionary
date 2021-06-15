@@ -41,9 +41,9 @@ class WordClass(Enum):
     """
 
     NA = "NA"
-    NAD = "NAD"
+    NDA = "NDA"
     NI = "NI"
-    NID = "NID"
+    NDI = "NDI"
     VAI = "VAI"
     VII = "VII"
     VTA = "VTA"
@@ -87,8 +87,8 @@ class WordClass(Enum):
         """
         >>> WordClass.VAI.to_fst_output_style()
         '+V+AI'
-        >>> WordClass.NID.to_fst_output_style()
-        '+N+I+D'
+        >>> WordClass.NDI.to_fst_output_style()
+        '+N+D+I'
         >>> WordClass.IPC.to_fst_output_style()
         '+Ipc'
         >>> WordClass.Pron.to_fst_output_style()
@@ -106,8 +106,8 @@ class WordClass(Enum):
         """
         >>> WordClass.VAI.without_pos()
         'AI'
-        >>> WordClass.NID.without_pos()
-        'ID'
+        >>> WordClass.NDI.without_pos()
+        'DI'
         >>> WordClass.IPC.without_pos()
         'IPC'
         """
@@ -123,8 +123,8 @@ class WordClass(Enum):
         """
         >>> WordClass.VAI.to_layout_table_name(ParadigmSize.BASIC)
         'vai-basic'
-        >>> WordClass.NID.to_layout_table_name(ParadigmSize.LINGUISTIC)
-        'nid-linguistic'
+        >>> WordClass.NDI.to_layout_table_name(ParadigmSize.LINGUISTIC)
+        'ndi-linguistic'
         """
 
         return self.value.lower() + "-" + paradigm_size.value.lower()

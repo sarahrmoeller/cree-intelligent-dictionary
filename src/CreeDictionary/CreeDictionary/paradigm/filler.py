@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 
 PARADIGM_NAME_TO_WC = {
     "noun-na": WordClass.NA,
-    "noun-nad": WordClass.NAD,
+    "noun-nad": WordClass.NDA,
     "noun-ni": WordClass.NI,
-    "noun-nid": WordClass.NID,
+    "noun-nid": WordClass.NDI,
     "verb-ai": WordClass.VAI,
     "verb-ii": WordClass.VII,
     "verb-ta": WordClass.VTA,

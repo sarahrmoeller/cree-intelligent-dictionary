@@ -125,7 +125,12 @@ def extract_word_class(analysis: str) -> Optional[WordClass]:
         if group:
             if group.startswith("+Num"):  # special case
                 group = group[4:]
-            return WordClass(group.replace("+", "").upper())
+            text_class = group.replace("+", "").upper()
+            if text_class == "NAD":
+                text_class = "NDA"
+            if text_class == "NID":
+                text_class = "NDI"
+            return WordClass(text_class)
         else:
             return None
     else:

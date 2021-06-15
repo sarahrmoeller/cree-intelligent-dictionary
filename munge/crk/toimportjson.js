@@ -47,14 +47,14 @@ const demonstrativePronouns = new Set([
 // If we’ve whittled choices down to just the analyses listed, take the first
 // one in the list.
 const tieBreakers = [
-    ["maskwa+N+A+Sg", "maskwa+N+A+Obv"],
-    ["niska+N+A+Sg", "niska+N+A+Obv"],
+  ["maskwa+N+A+Sg", "maskwa+N+A+Obv"],
+  ["niska+N+A+Sg", "niska+N+A+Obv"],
 ];
 
 function getTieBreaker(analyses) {
   // FIXME: on all but tiny input dictionaries, tieBreakers should be turned
   // into a map by lemma.
-  const smushed = analyses.map(a => smushAnalysis(a));
+  const smushed = analyses.map((a) => smushAnalysis(a));
   for (const tb of tieBreakers) {
     if (isEqual(tb, smushed)) {
       for (const a of analyses) {
@@ -139,8 +139,8 @@ function matchAnalysis(analysis, { head, pos }) {
   for (let [paradigmName, paradigmSpecificWordClass, paradigmTags] of [
     ["NA", "NA", ["+N", "+A"]],
     ["NI", "NI", ["+N", "+I"]],
-    ["NAD", "NDA", ["+N", "+A", "+D"]],
-    ["NID", "NDI", ["+N", "+I", "+D"]],
+    ["NDA", "NDA", ["+N", "+A", "+D"]],
+    ["NDI", "NDI", ["+N", "+I", "+D"]],
     ["VTA", "VTA", ["+V", "+TA"]],
     ["VTI", "VTI", ["+V", "+TI"]],
     ["VAI", "VAI", ["+V", "+AI"]],
@@ -161,64 +161,66 @@ function smushAnalysis(lemma_with_affixes) {
   return [prefixTags.join(""), lemma, suffixTags.join("")].join("");
 }
 
-function inferAnalysis({head, pos, key}) {
+function inferAnalysis({ head, pos, key }) {
   let ok = false;
 
-    const analyses = crkAnalyzer.lookup_lemma_with_affixes(head);
-    // Does FST analysis match POS from toolbox file?
-    let matches = [];
-    for (const a of analyses) {
-      const match = matchAnalysis(a, { head, pos });
-      if (match) {
-        matches.push(match);
-      }
+  const analyses = crkAnalyzer.lookup_lemma_with_affixes(head);
+  // Does FST analysis match POS from toolbox file?
+  let matches = [];
+  for (const a of analyses) {
+    const match = matchAnalysis(a, { head, pos });
+    if (match) {
+      matches.push(match);
     }
-    let analysis, paradigm;
-    if (matches.length > 0) {
-      // ôma analyzes as +Pron+Def or +Pron+Dem; since we have a paradigm for
-      // the latter, let’s prefer it.
-      const matchesWithParadigms = matches.filter((m) => m.paradigm !== null);
-      if (matchesWithParadigms.length > 0) {
-        matches = matchesWithParadigms;
-      }
+  }
+  let analysis, paradigm;
+  if (matches.length > 0) {
+    // ôma analyzes as +Pron+Def or +Pron+Dem; since we have a paradigm for
+    // the latter, let’s prefer it.
+    const matchesWithParadigms = matches.filter((m) => m.paradigm !== null);
+    if (matchesWithParadigms.length > 0) {
+      matches = matchesWithParadigms;
+    }
 
-      function analysisTagCount(analysis) {
-        const [prefixTags, lemma, suffixTags] = analysis;
-        return prefixTags.length + suffixTags.length;
-      }
+    function analysisTagCount(analysis) {
+      const [prefixTags, lemma, suffixTags] = analysis;
+      return prefixTags.length + suffixTags.length;
+    }
 
-      const minTagCount = min(matches.map((m) => analysisTagCount(m.analysis)));
-      const matchesWithMinTagCount = matches.filter(
-        (m) => analysisTagCount(m.analysis) === minTagCount
+    const minTagCount = min(matches.map((m) => analysisTagCount(m.analysis)));
+    const matchesWithMinTagCount = matches.filter(
+      (m) => analysisTagCount(m.analysis) === minTagCount
+    );
+    if (matchesWithMinTagCount.length === 1) {
+      const bestMatch = matchesWithMinTagCount[0];
+      analysis = bestMatch.analysis;
+      paradigm = bestMatch.paradigm;
+      ok = true;
+    } else if (getTieBreaker(matchesWithMinTagCount.map((m) => m.analysis))) {
+      const tieBreakerAnalysis = getTieBreaker(
+        matchesWithMinTagCount.map((m) => m.analysis)
       );
-      if (matchesWithMinTagCount.length === 1) {
-        const bestMatch = matchesWithMinTagCount[0];
-        analysis = bestMatch.analysis;
-        paradigm = bestMatch.paradigm;
-        ok = true;
-      } else if (getTieBreaker(matchesWithMinTagCount.map(m => m.analysis))) {
-        const tieBreakerAnalysis = getTieBreaker(matchesWithMinTagCount.map(m => m.analysis));
-        for (const m of matchesWithMinTagCount) {
-          if (m.analysis === tieBreakerAnalysis) {
-            analysis = m.analysis;
-            paradigm = m.paradigm;
-            ok = true;
-            break;
-          }
+      for (const m of matchesWithMinTagCount) {
+        if (m.analysis === tieBreakerAnalysis) {
+          analysis = m.analysis;
+          paradigm = m.paradigm;
+          ok = true;
+          break;
         }
-        if (!ok) {
-          throw Error("tie breaker exists but was not applied");
-        }
-      } else {
-        console.log(`${matches.length} matches for ${key}`);
-        ok = false;
+      }
+      if (!ok) {
+        throw Error("tie breaker exists but was not applied");
       }
     } else {
       console.log(`${matches.length} matches for ${key}`);
       ok = false;
     }
+  } else {
+    console.log(`${matches.length} matches for ${key}`);
+    ok = false;
+  }
 
-    return { analysis, paradigm, ok};
+  return { analysis, paradigm, ok };
 }
 
 /**
@@ -240,23 +242,27 @@ class ImportJsonDictionary {
 
     const pos = ndjsonObject.dataSources?.CW?.pos;
 
-    if (head.startsWith("-") || (head.endsWith("-") && pos !== 'IPV')) {
+    if (head.startsWith("-") || (head.endsWith("-") && pos !== "IPV")) {
       // TODO: handle morphemes
       return;
     }
 
     let analysis, paradigm;
     let ok = false;
-    if (pos === 'IPV') {
+    if (pos === "IPV") {
       analysis = null;
       paradigm = null;
       ok = true;
-    } else if (head.includes(' ')) {
+    } else if (head.includes(" ")) {
       analysis = null;
       paradigm = null;
       ok = true;
     } else {
-      ({analysis, paradigm, ok} = inferAnalysis({head, pos, key: ndjsonObject.key}));
+      ({ analysis, paradigm, ok } = inferAnalysis({
+        head,
+        pos,
+        key: ndjsonObject.key,
+      }));
     }
 
     const linguistInfo = { pos };

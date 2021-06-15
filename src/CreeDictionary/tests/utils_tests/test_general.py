@@ -32,14 +32,14 @@ def test_hfstol_analysis_lemma_extraction(analysis, real_lemma):
 @pytest.mark.parametrize(
     "analysis, category",
     [
-        ("nôhkom+N+A+D+Px1Sg+Sg", WordClass("NAD")),
+        ("nôhkom+N+A+D+Px1Sg+Sg", WordClass("NDA")),
         ("wâhkwa+N+A+Sg", WordClass("NA")),
         ("maskwa +N+A+Der/Dim+N+A+Sg", WordClass("NA")),
         ("PV/yikate+tihtipinêw+V+TA+Ind+Prs+3Sg+4Sg/PlO", WordClass("VTA")),
         ("yîkatê-tihtipinam+V+TI+Ind+Prs+3Sg", WordClass("VTI")),
         ("yîkatêpayin+V+II+Ind+Prs+3Sg", WordClass("VII")),
         ("tânisi+Ipc", WordClass("IPC")),
-        ("mitêh+N+I+D+PxX+Sg", WordClass("NID")),
+        ("mitêh+N+I+D+PxX+Sg", WordClass("NDI")),
         ("ôma+Pron+Def+Med+IN+Pl", WordClass("PRON")),
     ],
 )

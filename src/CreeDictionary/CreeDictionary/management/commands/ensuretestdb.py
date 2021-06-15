@@ -21,8 +21,13 @@ class Command(BaseCommand):
 
         call_command("migrate", verbosity=0)
 
-        import_test_dictionary()
-        ensure_wordform_paradigms()
+        call_command(
+            "importjsondict",
+            settings.BASE_DIR.parent.parent
+            / "munge"
+            / "crk"
+            / "crk-test-db.importjson",
+        )
         add_some_auto_translations()
         call_command("ensurecypressadminuser")
 

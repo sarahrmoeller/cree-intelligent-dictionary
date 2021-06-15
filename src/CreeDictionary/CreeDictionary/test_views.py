@@ -1,7 +1,6 @@
 import logging
 from http import HTTPStatus
 from typing import Dict, Optional
-from urllib.parse import urlencode
 
 import pytest
 from django.http import (
@@ -13,8 +12,8 @@ from django.test import Client
 from django.urls import reverse
 from pytest_django.asserts import assertInHTML
 
-from morphodict.lexicon.models import Wordform
 from crkeng.app.preferences import DisplayMode, ParadigmLabel
+from morphodict.lexicon.models import Wordform
 
 # The test wants an ID that never exists. Never say never; I have no idea if we'll
 # have over two billion wordforms, however, we'll most likely run into problems once

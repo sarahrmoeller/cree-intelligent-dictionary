@@ -45,6 +45,10 @@ class DefaultLemmaPicker:
         with open(lemma_tags_path) as lemma_tags_file:
             for row in csv.reader(lemma_tags_file, delimiter="\t"):
                 str_word_class, templates = row
+                if str_word_class == "NAD":
+                    str_word_class = "NDA"
+                if str_word_class == "NID":
+                    str_word_class = "NDI"
                 self._word_class_to_lemma_analysis_templates[
                     WordClass(str_word_class.strip().upper())
                 ] = [Template(t) for t in templates.strip().split(" ")]

@@ -94,11 +94,11 @@ def convert_xml_inflectional_category_to_word_class(
     if ic_text.startswith("VII"):
         return WordClass.VII
     if ic_text.startswith("NDA"):
-        return WordClass.NAD
+        return WordClass.NDA
     if ic_text.startswith("NI"):
         return WordClass.NI
     if ic_text.startswith("NDI"):
-        return WordClass.NID
+        return WordClass.NDI
     if ic_text.startswith("NA"):
         return WordClass.NA
 

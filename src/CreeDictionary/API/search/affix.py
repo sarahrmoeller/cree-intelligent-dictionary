@@ -20,6 +20,7 @@ from django.conf import settings
 from morphodict.lexicon.models import Wordform, TargetLanguageKeyword
 from CreeDictionary.utils import get_modified_distance
 from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
+from morphodict.lexicon.util import strip_accents_for_search_lookups
 from .types import (
     InternalForm,
     Result,
@@ -81,9 +82,7 @@ class AffixSearcher:
         search.  You SHOULD throw out diacritics, choose a Unicode Normalization form,
         and choose a single letter case here!
         """
-        # TODO: make this work for not just Cree!
-        # TODO: allow users to override this method
-        return SimplifiedForm(remove_cree_diacritics(query.lower()))
+        return SimplifiedForm(strip_accents_for_search_lookups(query.lower()))
 
 
 def _reverse(text: SimplifiedForm) -> SimplifiedForm:

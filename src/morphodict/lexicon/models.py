@@ -1,36 +1,25 @@
 from __future__ import annotations
 
 import logging
-from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Literal, Optional, Union, Any
-from urllib.parse import quote
+from typing import Dict, Literal, Union, Any
 
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db import models, transaction
-from django.db.models import Max, Q
+from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
-from hfst_optimized_lookup import Analysis
-
-from CreeDictionary.utils import (
-    PartOfSpeech,
-    WordClass,
-    fst_analysis_parser,
-    shared_res_dir,
-)
-from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
-from CreeDictionary.utils.types import FSTTag
-
-from CreeDictionary.CreeDictionary.relabelling import LABELS
 
 from CreeDictionary.API.schema import SerializedDefinition
+from CreeDictionary.utils import (
+    shared_res_dir,
+)
 
 # How long a wordform or dictionary head can be (number of Unicode scalar values)
 # TODO: is this too small?
 from morphodict.analysis import RichAnalysis
 
-MAX_WORDFORM_LENGTH = 40
+# Not actually enforced in SQLite
+MAX_WORDFORM_LENGTH = 60
 
 # Don't start evicting cache entries until we've seen over this many unique definitions:
 MAX_SOURCE_ID_CACHE_ENTRIES = 4096
@@ -72,7 +61,7 @@ class Wordform(models.Model):
     raw_analysis = models.JSONField(null=True, encoder=DiacriticPreservingJsonEncoder)
 
     paradigm = models.CharField(
-        max_length=50,
+        max_length=MAX_WORDFORM_LENGTH,
         null=True,
         blank=False,
         default=None,
@@ -98,7 +87,7 @@ class Wordform(models.Model):
     )
 
     slug = models.CharField(
-        max_length=50,
+        max_length=MAX_WORDFORM_LENGTH,
         unique=True,
         null=True,
         help_text="""
@@ -110,13 +99,13 @@ class Wordform(models.Model):
     # some lemmas have stems, they are shown in linguistic analysis
     # e.g. wâpam- is the stem for wâpamêw
     linguist_info_stem = models.CharField(
-        max_length=128,
+        max_length=MAX_WORDFORM_LENGTH,
         blank=True,
         null=True,
     )
 
     linguist_info_pos = models.CharField(
-        max_length=10,
+        max_length=MAX_WORDFORM_LENGTH,
         help_text="Inflectional category directly from source xml file",  # e.g. NI-3
     )
 
@@ -284,7 +273,7 @@ class Definition(models.Model):
 
 
 class TargetLanguageKeyword(models.Model):
-    text = models.CharField(max_length=20)
+    text = models.CharField(max_length=MAX_WORDFORM_LENGTH)
 
     wordform = models.ForeignKey(
         Wordform, on_delete=models.CASCADE, related_name="target_language_keyword"
@@ -308,7 +297,7 @@ class SourceLanguageKeyword(models.Model):
     that they’re still searchable even if what the user typed in isn’t exact.
     """
 
-    text = models.CharField(max_length=20)
+    text = models.CharField(max_length=MAX_WORDFORM_LENGTH)
 
     wordform = models.ForeignKey(Wordform, on_delete=models.CASCADE)
 

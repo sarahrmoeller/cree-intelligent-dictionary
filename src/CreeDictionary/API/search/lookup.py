@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Iterable
 
 from django.db.models import Q
 
@@ -14,20 +13,16 @@ from morphodict.analysis import (
     rich_analyze_relaxed,
 )
 from morphodict.lexicon.models import Wordform, SourceLanguageKeyword
+from morphodict.lexicon.util import strip_accents_for_search_lookups
 from . import core
 from .types import Result
-from ...utils.cree_lev_dist import remove_cree_diacritics
 
 logger = logging.getLogger(__name__)
 
 
 def fetch_results(search_run: core.SearchRun):
-    """
-    The rest of this method is code Eddie has NOT refactored, so I don't really
-    understand what's going on here:
-    """
-
-    fetch_results_from_keywords(search_run)
+    fetch_results_from_target_language_keywords(search_run)
+    fetch_results_from_source_language_keywords(search_run)
 
     # Use the spelling relaxation to try to decipher the query
     #   e.g., "atchakosuk" becomes "acâhkos+N+A+Pl" --
@@ -77,21 +72,9 @@ def fetch_results(search_run: core.SearchRun):
             key=lambda f: get_modified_distance(f, search_run.internal_query),
         )
 
-        possible_lemma_wordforms = Wordform.objects.filter(
-            text=analysis.lemma, is_lemma=True
-        )[:]
-
-        if len(possible_lemma_wordforms) > 1:
-            max_tag_intersection_count = max(
-                analysis.tag_intersection_count(lwf.analysis)
-                for lwf in possible_lemma_wordforms
-            )
-            possible_lemma_wordforms = [
-                lwf
-                for lwf in possible_lemma_wordforms
-                if analysis.tag_intersection_count(lwf.analysis)
-                == max_tag_intersection_count
-            ]
+        possible_lemma_wordforms = best_lemma_matches(
+            analysis, Wordform.objects.filter(text=analysis.lemma, is_lemma=True)
+        )
 
         for lemma_wordform in possible_lemma_wordforms:
             synthetic_wordform = Wordform(
@@ -110,9 +93,56 @@ def fetch_results(search_run: core.SearchRun):
                 )
             )
 
+
+def best_lemma_matches(analysis, possible_lemmas) -> list[Wordform]:
+    """
+    Return best matches between analysis and potentially matching lemmas
+
+    The following example is in Plains Cree but the algorithm should be good
+    enough for any language.
+
+    nikîmôci-nêwokâtânân has analysis PV/kimoci+nêwokâtêw+V+AI+Ind+1Pl
+
+    Which of the three lemmas for nêwokâtêw should that be matched to?
+
+    Let’s take the ones with the most tags in common.
+
+                                    Tags in common    Winner
+        nêwokâtêw+N+A+Sg            0
+        nêwokâtêw+V+AI+Ind+3Sg      3   +V +AI +Ind   *
+        nêwokâtêw+V+II+Ind+3Sg      2   +V +Ind
+
+    We may get better results if we have, for the wordform language, a list of
+    lexical tags like +V to consider as opposed to inflectional tags like +3Sg.
+    """
+    possible_lemmas = possible_lemmas[:]
+    if len(possible_lemmas) < 2:
+        return possible_lemmas
+
+    max_tag_intersection_count = max(
+        analysis.tag_intersection_count(lwf.analysis) for lwf in possible_lemmas
+    )
+    return [
+        lwf
+        for lwf in possible_lemmas
+        if analysis.tag_intersection_count(lwf.analysis) == max_tag_intersection_count
+    ]
+
+
+def fetch_results_from_target_language_keywords(search_run):
+    for stemmed_keyword in stem_keywords(search_run.internal_query):
+        for wordform in Wordform.objects.filter(
+            target_language_keyword__text__iexact=stemmed_keyword
+        ):
+            search_run.add_result(
+                Result(wordform, target_language_keyword_match=[stemmed_keyword])
+            )
+
+
+def fetch_results_from_source_language_keywords(search_run):
     res = SourceLanguageKeyword.objects.filter(
         Q(text=search_run.internal_query)
-        | Q(text=remove_cree_diacritics(search_run.internal_query).lower())
+        | Q(text=strip_accents_for_search_lookups(search_run.internal_query).lower())
     )
     for kw in res:
         search_run.add_result(
@@ -124,27 +154,3 @@ def fetch_results(search_run: core.SearchRun):
                 ),
             )
         )
-
-
-def fetch_results_from_keywords(search_run):
-    # now we get results searched by English
-    for stemmed_keyword in stem_keywords(search_run.internal_query):
-        for wordform in Wordform.objects.filter(
-            target_language_keyword__text__iexact=stemmed_keyword
-        ):
-            search_run.add_result(
-                Result(wordform, target_language_keyword_match=[stemmed_keyword])
-            )
-
-
-def filter_cw_wordforms(queryset: Iterable[Wordform]) -> Iterable[Wordform]:
-    """
-    return the wordforms that has definition from CW dictionary
-
-    :param queryset: an Iterable of Wordforms
-    """
-    for wordform in queryset:
-        for definition in wordform.definitions.all():
-            if "CW" in definition.source_ids:
-                yield wordform
-                break

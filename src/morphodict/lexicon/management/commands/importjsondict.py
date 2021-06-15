@@ -5,7 +5,6 @@ from pathlib import Path
 
 from django.core.management import BaseCommand, call_command
 
-from CreeDictionary.utils.cree_lev_dist import remove_cree_diacritics
 from CreeDictionary.utils.english_keyword_extraction import stem_keywords
 from morphodict.lexicon.models import (
     Wordform,
@@ -14,6 +13,7 @@ from morphodict.lexicon.models import (
     TargetLanguageKeyword,
     SourceLanguageKeyword,
 )
+from morphodict.lexicon.util import strip_accents_for_search_lookups
 
 logger = logging.getLogger(__name__)
 
@@ -70,8 +70,7 @@ class Command(BaseCommand):
 
                     for diacritic_variant in [
                         piece,
-                        # FIXME: Cree-specific
-                        remove_cree_diacritics(piece),
+                        strip_accents_for_search_lookups(piece),
                     ]:
                         variants.update(
                             [

@@ -57,12 +57,10 @@ def entry_details(request, slug: str):
         - paradigm-size (default is BASIC) to specify the size of the paradigm
 
     :param request: accepts query params `pos` `inflectional_category` `analysis` `id` to further specify query_string
-    :param slug: the exact form of the lemma (no spell relaxation)
+    :param slug: the stable unique ID of the lemma
     """
 
     lemma = Wordform.objects.filter(slug=slug, is_lemma=True)
-    if additional_filters := disambiguating_filter_from_query_params(request.GET):
-        lemma = lemma.filter(**additional_filters)
 
     if lemma.count() != 1:
         # The result is either empty or ambiguous; either way, do a search!

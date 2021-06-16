@@ -37,8 +37,11 @@ FST_TOOL_SAMPLES = [
 
 # Morphodict configuration
 
+MORPHODICT_SITE_TITLE = "itwêwina"
+MORPHODICT_SITE_SUBTITLE = "Woods Cree Dictionary"
+
 RELAXED_ANALYZER_FST_FILENAME = "analyzer-gt-desc.hfstol"
-STRICT_ANALYZER_FST_FILENAME = RELAXED_ANALYZER_FST_FILENAME
+STRICT_ANALYZER_FST_FILENAME = "analyzer-gt-norm.hfstol"
 STRICT_GENERATOR_FST_FILENAME = "generator-gt-norm.hfstol"
 
 # The ISO 639-1 code is used in the lang="" attributes in HTML.
@@ -58,11 +61,15 @@ MORPHODICT_TARGET_LANGUAGE = "eng"
 # orthography.
 MORPHODICT_ORTHOGRAPHY = {
     # All entries in Wordform should be written in SRO (ēīōā)
-    "default": "Latn-x-macron",
+    "default": "Latn-x-macron-cwd",
     "available": {
-        "Latn-x-macron": {
+        "Latn-x-macron-cwd": {
             "name": "SRO (ēīōā)",
-            "converter": "CreeDictionary.CreeDictionary.orthography.to_macrons",
+            "converter": "CreeDictionary.CreeDictionary.orthography.to_macrons_cwd",
+        },
+        "CMRO": {
+            "name": "CMRO",
+            "converter": "cwdeng.app.orthography.to_cmro",
         },
         "Cans": {
             "name": "Syllabics",

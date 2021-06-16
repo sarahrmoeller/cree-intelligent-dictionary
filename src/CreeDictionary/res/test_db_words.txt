@@ -45,11 +45,11 @@ nipiy
 tânisi
 
 # Pronoun examples
-niya
+niýa
 awa
 ôma
 awîna
-niyanân
+niýanân
 
 # particles
 ispîhk
@@ -89,7 +89,7 @@ acâhkosa kâ-otakohpit
 
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/218
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/223
-âyiman
+âýiman
 
 # https://github.com/UAlbertaALTLab/cree-intelligent-dictionary/issues/150
 kotiskâwêw
@@ -103,7 +103,7 @@ pipon
 kîsikâw
 
 # Some paradigms of homographic entries do not show up
-nôhtêpayiw
+nôhtêpaýiw
 ayâw
 
 # some entries do not show up
@@ -127,7 +127,7 @@ oskana kâ-asastêki
 misâskwatôminihk
 
 êkwatik
-katawatêyimêw
+katawatêýimêw
 asawâpamêw
 atamiskawêw
 
@@ -137,4 +137,8 @@ nêwokâtêw
 
 maskwa
 niska
-sôskopayîs
+sôskopaýîs
+môswa
+
+# in Woods Cree, has both transcription changes, ý → th and ê → î
+asiskîwiýâkanihkêw

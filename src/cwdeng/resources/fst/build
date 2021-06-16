@@ -4,6 +4,7 @@ set -euxv
 
 LANG_CWD=~/src/lang-cwd
 
+trap 'rm -f crk-err-filter.hfst' 0 1 2 3 15
 echo '~[ $[ "+Err/Frag" ] ] ;' | hfst-regexp2fst -S -o crk-err-filter.hfst
 
 hfst-compose --harmonize-flags \
@@ -23,3 +24,7 @@ hfst-fst2fst --optimized-lookup-unweighted \
     ${LANG_CWD}/src/generator-gt-norm.hfst > generator-gt-norm.hfstol
 
 echo ayiwinisa+N+I+Px1Sg+Pl | hfst-optimized-lookup generator-gt-norm.hfstol
+
+hfst-fst2fst --optimized-lookup-unweighted \
+    ${LANG_CWD}/src/orthography/default-to-cmro.lookup.hfst > default-to-cmro.hfstol
+echo môswa | hfst-optimized-lookup default-to-cmro.hfstol

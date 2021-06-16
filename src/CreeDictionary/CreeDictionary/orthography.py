@@ -8,6 +8,7 @@ Orthography conversion utilities.
 from cree_sro_syllabics import sro2syllabics
 
 CIRCUMFLEX_TO_MACRON = str.maketrans("êîôâ", "ēīōā")
+CIRCUMFLEX_TO_MACRON_CWD = str.maketrans("êîôâ", "īīōā")
 
 
 def to_macrons(sro_circumflex: str) -> str:
@@ -15,6 +16,13 @@ def to_macrons(sro_circumflex: str) -> str:
     Transliterate SRO to macrons.
     """
     return sro_circumflex.translate(CIRCUMFLEX_TO_MACRON)
+
+
+def to_macrons_cwd(sro_circumflex: str) -> str:
+    """
+    Transliterate SRO to macrons.
+    """
+    return sro_circumflex.translate(CIRCUMFLEX_TO_MACRON_CWD)
 
 
 def to_syllabics(sro_circumflex: str) -> str:

@@ -6,7 +6,7 @@ const { readFile, writeFile } = require("fs/promises");
 const { join: joinPath, resolve: resolvePath } = require("path");
 const { inspect } = require("util");
 const yargs = require("yargs");
-const { intersection, min, isEqual } = require("lodash");
+const { intersection, min, isEqual, uniqBy } = require("lodash");
 
 const srcPath = resolvePath(__dirname, "..", "..", "src");
 
@@ -49,6 +49,7 @@ const demonstrativePronouns = new Set([
 const tieBreakers = [
   ["maskwa+N+A+Sg", "maskwa+N+A+Obv"],
   ["niska+N+A+Sg", "niska+N+A+Obv"],
+  ["môswa+N+A+Sg", "môswa+N+A+Obv"],
 ];
 
 function getTieBreaker(analyses) {
@@ -89,19 +90,25 @@ async function readTestDbWords() {
   return ret;
 }
 
-const crkAnalyzer = new Transducer(
-  joinPath(
-    srcPath,
-    "crkeng/resources/fst/crk-strict-analyzer-for-dictionary.hfstol"
-  )
-);
+let analyzer;
+
+function FIXME_breakWordForFstWorkaround(a) {
+  a = a.replace(/[yý]/g, "th");
+  a = a.replace(/ê/g, "î");
+  return a;
+}
 
 /**
  * If the FST analysis matches, return {analysis, paradigm}. Otherwise return null.
  */
 function matchAnalysis(analysis, { head, pos }) {
   const [prefixTags, lemma, suffixTags] = analysis;
-  if (lemma !== head) {
+  if (
+    lemma !== head &&
+    // FIXME: hack to work around FST issues
+    FIXME_breakWordForFstWorkaround(lemma) !==
+      FIXME_breakWordForFstWorkaround(head)
+  ) {
     // TODO: collect reasons
     return null;
   }
@@ -164,7 +171,11 @@ function smushAnalysis(lemma_with_affixes) {
 function inferAnalysis({ head, pos, key }) {
   let ok = false;
 
-  const analyses = crkAnalyzer.lookup_lemma_with_affixes(head);
+  // bug? cwd analyzer has duplicate results for nitha
+  const analyses = uniqBy(
+    analyzer.lookup_lemma_with_affixes(head),
+    smushAnalysis
+  );
   // Does FST analysis match POS from toolbox file?
   let matches = [];
   for (const a of analyses) {
@@ -233,8 +244,8 @@ class ImportJsonDictionary {
   }
 
   // TODO: return error information if unable to process input
-  addFromNdjson(ndjsonObject) {
-    const head = ndjsonObject.lemma?.plains;
+  addFromNdjson(ndjsonObject, transliterator) {
+    const head = transliterator(ndjsonObject.lemma?.sro);
 
     if (!head) {
       return;
@@ -322,12 +333,30 @@ function aggregateSenses(ndjsonObject) {
   return ret;
 }
 
+function protoToWoods(s) {
+  let ret = s;
+  ret = ret.replace(/ý/g, "th");
+  ret = ret.replace(/ê/g, "î");
+
+  // BAD AND WRONG!! But lets us use the current buggy fst.
+  ret = ret.replace(/y/g, "th");
+
+  return ret;
+}
+
+function protoToPlains(s) {
+  let ret = s;
+  ret = ret.replace(/ý/g, "y");
+  return ret;
+}
+
 async function main() {
   const argv = yargs
     .strict()
     .demandCommand(0, 0)
     .option("test-words-only", { type: "boolean", default: true })
-    .option("output-file", { default: "crk-test-db.importjson" })
+    .option("woods", { type: "boolean", default: false })
+    .option("output-file")
     .option("echo", {
       type: "boolean",
       default: false,
@@ -337,6 +366,24 @@ async function main() {
       type: "string",
       default: `${process.env.HOME}/alt/git/altlab/crk/dicts/database.ndjson`,
     }).argv;
+
+  if (!argv.outputFile) {
+    argv.outputFile = argv.woods
+      ? "cwd-test-db.importjson"
+      : "crk-test-db.importjson";
+  }
+
+  analyzer = new Transducer(
+    joinPath(
+      srcPath,
+      argv.woods
+        ? // FIXME: using relaxed analyzer until FST issues fixed
+          "cwdeng/resources/fst/analyzer-gt-norm.hfstol"
+        : "crkeng/resources/fst/crk-strict-analyzer-for-dictionary.hfstol"
+    )
+  );
+
+  const transliterator = argv.woods ? protoToWoods : protoToPlains;
 
   const lexicalDatabase = (await readFile(argv.dictionaryDatabase)).toString();
 
@@ -351,23 +398,27 @@ async function main() {
 
     const obj = JSON.parse(piece);
 
-    const lemma = obj.lemma?.plains;
+    const lemma = obj.lemma?.sro;
     if (argv.testWordsOnly && !testDbWords.includes(lemma)) {
       continue;
     }
 
-    importJsonDictionary.addFromNdjson(obj);
+    importJsonDictionary.addFromNdjson(
+      obj,
+      argv.woods ? protoToWoods : protoToPlains
+    );
   }
 
   if (argv.testWordsOnly) {
-    for (const w of testDbWords) {
+    for (let w of testDbWords) {
+      w = transliterator(w);
       if (!importJsonDictionary._seenLemmas.has(w)) {
         console.log(`Warning: test_db_words.txt entry ${w} not imported`);
       }
     }
   }
 
-  const formattted = JSON.stringify(importJsonDictionary.entries(), null, 2);
+  const formattted = JSON.stringify(importJsonDictionary.entries());
 
   if (argv.echo) {
     console.log(formattted);

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -euxv
+
+LANG_CWD=~/src/lang-cwd
+
+echo '~[ $[ "+Err/Frag" ] ] ;' | hfst-regexp2fst -S -o crk-err-filter.hfst
+
+hfst-compose --harmonize-flags \
+    -1 ${LANG_CWD}/src/analyser-gt-desc.hfst \
+    -2 crk-err-filter.hfst \
+    | hfst-fst2fst --optimized-lookup-unweighted - > analyzer-gt-desc.hfstol
+echo ayiwinisa | hfst-optimized-lookup analyzer-gt-desc.hfstol
+
+hfst-compose --harmonize-flags \
+    -1 ${LANG_CWD}/src/analyser-gt-norm.hfst \
+    -2 crk-err-filter.hfst \
+    | hfst-fst2fst --optimized-lookup-unweighted - > analyzer-gt-norm.hfstol
+echo nipaw | hfst-optimized-lookup analyzer-gt-norm.hfstol
+echo nipâw | hfst-optimized-lookup analyzer-gt-norm.hfstol
+
+hfst-fst2fst --optimized-lookup-unweighted \
+    ${LANG_CWD}/src/generator-gt-norm.hfst > generator-gt-norm.hfstol
+
+echo ayiwinisa+N+I+Px1Sg+Pl | hfst-optimized-lookup generator-gt-norm.hfstol

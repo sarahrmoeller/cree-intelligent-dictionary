@@ -4,6 +4,8 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
 from django.core.management import BaseCommand, call_command
+from django.db import transaction
+from tqdm import tqdm
 
 from CreeDictionary.utils.english_keyword_extraction import stem_keywords
 from morphodict.lexicon.models import (
@@ -33,8 +35,12 @@ class Command(BaseCommand):
         )
         parser.add_argument("json_file")
 
+    # atomic() is here only to speed things up at the moment; sqlite is ~5x
+    # faster here when all the operations are inside of a transaction instead of
+    # implicitly triggering a COMMIT after every db update.
+    @transaction.atomic()
     def handle(self, json_file, purge, **options):
-        for abbrv in ["CW", "MD"]:
+        for abbrv in ["CW", "MD", "AE", "ALD", "OS"]:
             if not DictionarySource.objects.filter(abbrv=abbrv):
                 DictionarySource.objects.create(abbrv=abbrv)
 
@@ -45,7 +51,7 @@ class Command(BaseCommand):
         seen_slugs = set()
 
         data = json.loads(Path(json_file).read_text())
-        for entry in data:
+        for entry in tqdm(data):
             if existing := Wordform.objects.filter(slug=entry["slug"]).first():
                 # Cascade should take care of all related objects.
                 existing.delete()
@@ -92,7 +98,11 @@ class Command(BaseCommand):
                     text=sense["definition"],
                 )
                 for source in sense["sources"]:
-                    d.citations.add(source)
+                    try:
+                        d.citations.add(source)
+                    except:
+                        breakpoint()
+                        raise
 
                 keywords.update(stem_keywords(sense["definition"]))
 

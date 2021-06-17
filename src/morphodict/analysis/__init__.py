@@ -1,3 +1,4 @@
+import logging
 from functools import cache
 
 from hfst_optimized_lookup import TransducerFile, Analysis

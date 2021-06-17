@@ -7,10 +7,9 @@ const { join: joinPath, resolve: resolvePath } = require("path");
 const { inspect } = require("util");
 const yargs = require("yargs");
 const { intersection, min, isEqual, uniqBy } = require("lodash");
+const prettier = require("prettier");
 
 const srcPath = resolvePath(__dirname, "..", "..", "src");
-
-const ndJsonPosToParadigm = new Map([["NA-1", "NA"]]);
 
 const personalPronouns = new Set([
   // Personal pronouns
@@ -418,7 +417,10 @@ async function main() {
     }
   }
 
-  const formattted = JSON.stringify(importJsonDictionary.entries());
+  const formattted = prettier.format(
+    JSON.stringify(importJsonDictionary.entries()),
+    { parser: "json" }
+  );
 
   if (argv.echo) {
     console.log(formattted);

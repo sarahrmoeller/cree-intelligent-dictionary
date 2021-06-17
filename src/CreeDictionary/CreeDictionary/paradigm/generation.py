@@ -4,13 +4,14 @@ Handles paradigm generation.
 
 from functools import cache
 
+from django.conf import settings
+
 import morphodict.analysis
-from morphodict.lexicon.models import Wordform
 from CreeDictionary.CreeDictionary.paradigm.filler import Layout, ParadigmFiller
 from CreeDictionary.CreeDictionary.paradigm.manager import ParadigmManager
 from CreeDictionary.utils import shared_res_dir
 from CreeDictionary.utils.enums import ParadigmSize, WordClass
-from CreeDictionary.utils.fst_analysis_parser import extract_word_class
+from morphodict.lexicon.models import Wordform
 
 
 def generate_paradigm(lemma: Wordform, size: ParadigmSize) -> list[Layout]:
@@ -49,6 +50,12 @@ def default_paradigm_manager() -> ParadigmManager:
     Returns the ParadigmManager instance that loads layouts and FST from the res
     (resource) directory for the crk/eng language pair (itwêwina).
     """
-    return ParadigmManager(
-        shared_res_dir / "layouts", morphodict.analysis.strict_generator()
-    )
+
+    # The original CreeDictionary dir
+    layout_dir = shared_res_dir / "layouts"
+
+    site_specific_layout_dir = settings.BASE_DIR / "resources" / "layouts"
+    if site_specific_layout_dir.exists():
+        layout_dir = site_specific_layout_dir
+
+    return ParadigmManager(layout_dir, morphodict.analysis.strict_generator())

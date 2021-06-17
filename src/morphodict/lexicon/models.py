@@ -107,6 +107,8 @@ class Wordform(models.Model):
     linguist_info_pos = models.CharField(
         max_length=MAX_WORDFORM_LENGTH,
         help_text="Inflectional category directly from source xml file",  # e.g. NI-3
+        blank=True,
+        null=True,
     )
 
     class Meta:

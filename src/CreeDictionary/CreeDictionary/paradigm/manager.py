@@ -49,7 +49,7 @@ class ParadigmManager:
 
         if paradigm is None:
             raise NotImplementedError(
-                "not sure what should happen if a paradigm cannot be found"
+                f"not sure what should happen if a paradigm cannot be found: {paradigm_name=}"
             )
 
         return paradigm

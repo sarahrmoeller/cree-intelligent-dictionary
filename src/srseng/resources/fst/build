@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -euxv
+
+LANG_SRS=~/src/lang-srs
+
+for F in \
+    analyser-gt-desc.hfstol \
+    analyser-gt-norm.hfstol \
+    generator-gt-norm.hfstol \
+; do
+    hfst-fst2fst --optimized-lookup-unweighted \
+        --input "${LANG_SRS}/src/${F}" --output "${F}"
+done
+
+echo istsiy | hfst-optimized-lookup analyzer-gt-desc.hfstol
+echo istsiy | hfst-optimized-lookup analyzer-gt-norm.hfstol

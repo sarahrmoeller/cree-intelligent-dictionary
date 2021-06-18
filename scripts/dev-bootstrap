@@ -18,7 +18,7 @@ for LANG_PAIR in \
     cwdeng \
     srseng \
 ; do
-    for USE_TEST_DB in True False; do
+    for USE_TEST_DB in True ; do
         export USE_TEST_DB
 
         run ./${LANG_PAIR}-manage migrate

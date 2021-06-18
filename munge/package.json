@@ -2,7 +2,8 @@
   "dependencies": {
     "execifmain": "^0.0.2",
     "expand-tilde": "^2.0.2",
-    "hfstol": "/home/andrew/Library/Caches/yarn-add-tarball/hfstol-v0.0.0.602c2d67f8560f230d1569638027baacbef594b7.tgz",
-    "prettier": "^2.3.1"
+    "hfstol": "^0.0.0",
+    "prettier": "^2.3.1",
+    "yargs": "^17.0.1"
   }
 }

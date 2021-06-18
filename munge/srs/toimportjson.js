@@ -60,6 +60,8 @@ async function main() {
     e.analyses = analyses;
     if (analyses.length !== 0) {
       e.analysis = analyses[0];
+      // At this point, we think there should only be three paradigms: +V+I,
+      // +V+T, +V+D
       if (e.analysis[2].includes("+V") && e.analysis[2].includes("+I")) {
         e.paradigm = "VI";
       }

@@ -34,6 +34,8 @@ def rich_analyze_strict(text):
     )
 
 
+# This class might fit better inside the hfstol package, but waiting for
+# it to stabilize before moving it into dependency
 class RichAnalysis:
     """The one true FST analysis class.
 

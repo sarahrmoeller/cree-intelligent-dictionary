@@ -233,7 +233,7 @@ function changeTitleBySearchQuery(inputVal) {
 }
 
 function setSubtitle(subtitle) {
-  let defaultTitle = 'itwêwina: the online Cree dictionary'
+  let defaultTitle = 'morphidict - arpeng'
   document.title = subtitle ? `${subtitle} — ${defaultTitle}` : defaultTitle
 }
 

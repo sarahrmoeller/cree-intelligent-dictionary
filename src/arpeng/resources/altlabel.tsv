@@ -1,8 +1,8 @@
 FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI		
-[AFFIRMATIVE]		Affirmative	Affirmative				
-[NON_AFFIRMATIVE]		Non-affirmative	Non-affirmative				
-[NON_AFFIRMATIVE][NEG]		Non-affirmative negative	Not				
-[NON_AFFIRMATIVE][INTERROGATIVE]		Non-affirmative Interrogative	Question				
+[AFFIRMATIVE]	Affirmative	Affirmative	Affirmative				
+[NON_AFFIRMATIVE]	Non-affirmative	Non-affirmative	Non-affirmative				
+[NON_AFFIRMATIVE][NEG]	Non-affirmative Negative	Non-affirmative negative	Not				
+[NON_AFFIRMATIVE][INTERROGATIVE]	Non-affirmative Interrogative	Non-affirmative Interrogative	Question				
 [INTERROGATIVE]	Interrogative	Interrogative	Question				
 [INDICATIVE]	Indicative	Indicative	Statement				
 [IMPERATIVE]	Imper	Imperative	Command/Request				
@@ -18,7 +18,7 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [4SG-SUBJ]	4s	Subject: 4th Person Singular (Obviative)	s/he (further)				
 [4PL-SUBJ]	4p	Subject: 4th Person Plural (Obviative)	s/he (further)				
 [INANIMATE-SUBJECT]	3	Subject: Inanimate	it/they				
-[3SG-SUBJ][INANIMATE-SUBJECT]	3s	Subject: Inanimate	it/they				
+[ANIMATE-SUBJECT]	inanimate	Subject: Animate					
 							
 [1PL-SUBJ][INANIMATE-OBJECT]	1p → 3s	Subject: 1st Person Plural	we → it				
 [1PL-EXCL-SUBJ][INANIMATE-OBJECT]	1p (excl) → 3s	Subject: 1st Person Plural (Exclusive)	we (but not you) → it/they				
@@ -29,7 +29,8 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [3PL-SUBJ][INANIMATE-OBJECT]	3p → 3s	Subject: 3rd Person Plural	they → it/they				
 [4SG-SUBJ][INANIMATE-OBJECT]	4s → 3s	Subject: 4th Person Singular (Obviative)	s/he (further) → it/they				
 [4PL-SUBJ][INANIMATE-OBJECT]	4p → 3s	Subject: 4th Person Plural (Obviative)	s/he (further) → it/they				
-[INANIMATE-OBJECT]	→ 3	Object: Inanimate	it				
+[INANIMATE-OBJECT]	→ 3	Object: Inanimate	it/them				
+[ANIMATE-OBJECT]	→ animate	Object: Inanimate					
 							
 [1SG-OBJ]	→ 1s	Object: 1st Person Singular	→ me				
 [1PL-OBJ]	→ 1s	Object: 1st Person Plural	→ us				
@@ -95,10 +96,10 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [PERFECTIVE]	Perfective	Perfective					
 [IMPERFECTIVE]	Imperfective	Imperfective					
 [SIMPLE]	Simple	Simple tense					
+							
 [IC]	IC	Initial change	Initial change	Initial change			
 [II]	II	Inanimate Intransitive					
 [AI]	AI	Animate Intransitive					
-[IA]	IA						
 [TA]	TA	Animate Transitive					
 [TI]	TI	Inanimate Transitive					
 							
@@ -106,3 +107,6 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [SUBJUNCTIVE]	Subjunct	Subjunctive	would/could				
 [ITERATIVE]	Iter	Iterative	repeatedly				
 [PROHIBITIVE]	Prohib	Prohibitive	not allowed				
+							
+[VERB]	verb	Verb				
+

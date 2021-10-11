@@ -342,14 +342,14 @@ class Import:
             self.populate_wordform_definitions(wf, entry["senses"])
 
             slug_base = wf.slug.split("@")[0]
-            if wf.text != slug_base:
-                self.source_language_keyword_buffer.add(
-                    SourceLanguageKeyword(wordform=wf, text=slug_base)
-                )
-            if wf.fst_lemma and wf.text != wf.fst_lemma:
-                self.source_language_keyword_buffer.add(
-                    SourceLanguageKeyword(wordform=wf, text=wf.fst_lemma)
-                )
+#            if wf.text != slug_base:
+ #               self.source_language_keyword_buffer.add(
+  #                  SourceLanguageKeyword(wordform=wf, text=slug_base)
+   #             )
+    #        if wf.fst_lemma and wf.text != wf.fst_lemma:
+     #           self.source_language_keyword_buffer.add(
+      #              SourceLanguageKeyword(wordform=wf, text=wf.fst_lemma)
+       #         )
             if wf.raw_analysis is None:
                 self.index_unanalyzed_form(wf)
 

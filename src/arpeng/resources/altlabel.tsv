@@ -17,7 +17,8 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [3PL-SUBJ]	3p	Subject: 3rd Person Plural	they				
 [4SG-SUBJ]	4s	Subject: 4th Person Singular (Obviative)	s/he (further)				
 [4PL-SUBJ]	4p	Subject: 4th Person Plural (Obviative)	s/he (further)				
-[INANIMATE-SUBJECT]		Subject: Inanimate	it				
+[INANIMATE-SUBJECT]	3	Subject: Inanimate	it/they				
+[3SG-SUBJ][INANIMATE-SUBJECT]	3s	Subject: Inanimate	it/they				
 							
 [1PL-SUBJ][INANIMATE-OBJECT]	1p → 3s	Subject: 1st Person Plural	we → it				
 [1PL-EXCL-SUBJ][INANIMATE-OBJECT]	1p (excl) → 3s	Subject: 1st Person Plural (Exclusive)	we (but not you) → it/they				
@@ -28,7 +29,7 @@ FST TAG	LINGUISTIC (SHORT)	LINGUISTIC (LONG)	ENGLISH	NÊHIYAWÊWIN	EMOJI
 [3PL-SUBJ][INANIMATE-OBJECT]	3p → 3s	Subject: 3rd Person Plural	they → it/they				
 [4SG-SUBJ][INANIMATE-OBJECT]	4s → 3s	Subject: 4th Person Singular (Obviative)	s/he (further) → it/they				
 [4PL-SUBJ][INANIMATE-OBJECT]	4p → 3s	Subject: 4th Person Plural (Obviative)	s/he (further) → it/they				
-[INANIMATE-OBJECT]		Object: Inanimate	it				
+[INANIMATE-OBJECT]	→ 3	Object: Inanimate	it				
 							
 [1SG-OBJ]	→ 1s	Object: 1st Person Singular	→ me				
 [1PL-OBJ]	→ 1s	Object: 1st Person Plural	→ us				
